@@ -1,6 +1,7 @@
-import fitz  # PyMuPDF
+import fitz
 from utils.demo_job_text_parser import JobTextParser
 from utils.demo_job_db_handler import JobDbHandler
+
 
 def extract_text_from_pdf(path):
     with fitz.open(path) as doc:

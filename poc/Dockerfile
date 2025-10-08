@@ -10,6 +10,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
+COPY . /app
+RUN mkdir -p /app/uploads
 
 # For generate_samples.py
 RUN pip install --no-cache-dir fpdf2 pillow
@@ -17,3 +19,7 @@ RUN pip install --no-cache-dir fpdf2 pillow
 RUN pip install --no-cache-dir pytesseract
 # For demo_pdf.py
 RUN pip install --no-cache-dir PyMuPDF
+# For demo_pdf.py
+RUN pip install --no-cache-dir sqlalchemy psycopg2-binary
+# For demo_streamlit.py
+RUN pip install --no-cache-dir streamlit

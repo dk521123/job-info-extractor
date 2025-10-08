@@ -9,7 +9,6 @@ class JobTextParser:
         self.result = {}
 
     def parse(self) -> Dict[str, Optional[str]]:
-        """ メイン処理：各項目を抽出して辞書にまとめる """
         self.result['company'] = self._extract_company()
         self.result['position'] = self._extract_position()
         self.result['location'] = self._extract_location()
@@ -44,6 +43,5 @@ class JobTextParser:
         return None
 
     def _clean_value(self, line: str) -> str:
-        """ 「項目名: 値」から値だけを抽出 """
         parts = re.split(r'[:：]', line, maxsplit=1)
         return parts[1].strip() if len(parts) > 1 else line.strip()
