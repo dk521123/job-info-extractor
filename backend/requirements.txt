@@ -1,7 +1,8 @@
 fastapi
 uvicorn
-sqlalchemy
 pytesseract
-pdf2image
 Pillow
 python-multipart
+PyMuPDF
+sqlalchemy[asyncio]
+psycopg2-binary

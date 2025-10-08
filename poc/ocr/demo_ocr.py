@@ -13,7 +13,7 @@ def extract_text_from_image(img_path):
     img = Image.open(img_path)
     custom_config = r'--psm 6 -l jpn --oem 3 -c preserve_interword_spaces=1'
     text = pytesseract.image_to_string(img, config=custom_config)
-    return text
+    return text.splitlines()
 
 if __name__ == "__main__":
     img_path = "test_files/sample.png"

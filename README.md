@@ -3,17 +3,20 @@
 ## How to run
 1. `docker compose up --build`
 2. Go to `http://localhost:8000`
-3. cd frontend & 
+3. Go to `http://localhost:3000`
 
 ## 
 ```
 job-info-extractor/
-├── backend/
-│   ├── main.py
-│   ├── models.py
-│   ├── database.py
+├── backend
+│   ├── app
+│   │   ├── database.py
+│   │   ├── main.py
+│   │   └── models.py
+│   ├── Dockerfile
 │   └── requirements.txt
-├── frontend/
+├── frontend
+│   ├── Dockerfile
 │   └── index.html
-└── uploads/
+└── docker-compose.yml
 ```

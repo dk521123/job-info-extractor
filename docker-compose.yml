@@ -10,7 +10,7 @@ services:
       - .env
   # Only for development
   pgadmin:
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:latest
     container_name: pgadmin
     hostname: pgadmin
     restart: always
