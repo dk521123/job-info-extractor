@@ -17,7 +17,11 @@ job-info-extractor/
 └── docker-compose.yml
 ```
 
-## How to run
+## For development
+### Pre-condition
+1. Install docker
+
+### How to run
 1. `docker compose up --build`
 2. Go to `http://localhost:8000`
 3. Go to `http://localhost:3000`
