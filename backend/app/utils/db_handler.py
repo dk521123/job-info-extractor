@@ -3,30 +3,32 @@ from datetime import datetime, timezone
 from typing import Any, Text
 
 from sqlalchemy import DateTime, create_engine, Column, Integer, Text
-from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import DeclarativeBase
 
 
-Base = declarative_base()
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
-class JobInfo(Base):
+# Define table
+class BaseTableMixin:
+    id = Column(Integer, primary_key=True, index=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc),
+                        onupdate=lambda: datetime.now(timezone.utc))
+
+class Base(DeclarativeBase):
+    pass
+
+class JobInfo(Base, BaseTableMixin):
     __tablename__ = "job_info"
 
-    id = Column(Integer,
-                primary_key=True,
-                index=True)
     file_name = Column(Text)
     file_type = Column(Text)
     company_name = Column(Text)
     position = Column(Text)
     location = Column(Text)
     salary = Column(Text)
-    created_at = Column(DateTime,
-                        default=datetime.now(timezone.utc))
-    updated_at = Column(DateTime,
-                        default=datetime.now(timezone.utc),
-                        onupdate=datetime.now(timezone.utc))
 
 class DbHandler(object):
     def __init__(self, user: str, password: str, host: str, db_port: str, db_name: str, ):

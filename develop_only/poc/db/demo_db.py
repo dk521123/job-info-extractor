@@ -1,24 +1,11 @@
 from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy.orm import sessionmaker, DeclarativeBase
 
-DATABASE_URL = "postgresql://user:password@localhost:5433/demo_db"
-
-engine = create_engine(DATABASE_URL, echo=True)
-
-# Connection test
-try:
-    with engine.connect() as conn:
-        print("Success to connect from SQLAlchemy")
-except Exception as e:
-    print("Failed to connect:", e)
-
-# Connect DB for SQLite
-print("DATABASE_URL:", DATABASE_URL)
-
-engine = create_engine(DATABASE_URL, echo=True)
-Base = declarative_base()
 
 # Define table
+class Base(DeclarativeBase):
+    pass
+
 class User(Base):
     __tablename__ = "users"
 
@@ -26,6 +13,9 @@ class User(Base):
     name = Column(String)
     age = Column(Integer)
 
+DATABASE_URL = "postgresql://user:password@localhost:5432/demo_db"
+engine = create_engine(DATABASE_URL, echo=True)
+print("DATABASE_URL:", DATABASE_URL)
 # Create table
 Base.metadata.create_all(engine)
 
@@ -42,3 +32,7 @@ session.commit()
 users = session.query(User).all()
 for user in users:
     print(user.name, user.age)
+
+filter_by_user = session.query(User).filter_by(name="Mike").first()
+
+session.close()
