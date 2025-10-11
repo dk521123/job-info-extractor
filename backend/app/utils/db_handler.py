@@ -36,6 +36,8 @@ class DbHandler(object):
         self.engine = create_engine(self.url, echo=True)
         Session = sessionmaker(bind=self.engine)
         self.session = Session()
+  
+    def init(self):
         # Create the tables in the database
         Base.metadata.create_all(self.engine)
 

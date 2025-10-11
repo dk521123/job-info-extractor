@@ -34,12 +34,14 @@ def init_app():
     return app
 
 def init_db():
-    db_user = os.getenv("POSTGRES_USER", "postgres")
-    db_password = os.getenv("POSTGRES_PASSWORD", "password")
+    db_user = os.getenv("POSTGRES_USER")
+    db_password = os.getenv("POSTGRES_PASSWORD")
     db_host = os.getenv("POSTGRES_HOST", "db")
     db_port = os.getenv("POSTGRES_PORT", "5432")
     db_name = os.getenv("POSTGRES_DB", "demo_db")
     db_handler = DbHandler(db_user, db_password, db_host, db_port, db_name)
+
+    db_handler.init()
     if not db_handler.is_connected():
         logger.error("Database connection failed")
         raise Exception("Database connection failed")
