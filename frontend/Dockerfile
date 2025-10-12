@@ -1,12 +1,13 @@
-FROM python:3.13-slim
+# ベースイメージ
+FROM node:20
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# RUN pip install --no-cache-dir -r requirements.txt
+RUN apt-get update && apt-get upgrade -y && apt-get clean
 
 WORKDIR /app
 
-COPY . /app
+COPY package*.json ./
+RUN npm install
 
-CMD ["python3", "-m", "http.server", "3000"]
+COPY . .
+
+CMD ["npm", "run", "dev"]
