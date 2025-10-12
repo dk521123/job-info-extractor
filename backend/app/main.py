@@ -1,5 +1,6 @@
 from asyncio.log import logger
 import os
+from typing import List
 
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,7 +9,7 @@ from app.utils.job_parse import JobParser
 from app.utils.extractor import ImageExtractor, PDFExtractor
 from app.utils.db_handler import DbHandler
 from app.utils.db_handler import JobInfo
-
+from . import schemas
 
 UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -49,6 +50,11 @@ def init_db():
 
 app = init_app()
 db_handler = init_db()
+
+@app.get("/list/", response_model=List[schemas.JobInfoResponse])
+def get_job_info_list():
+    job_info_list = db_handler.get_all_job_info()
+    return job_info_list
 
 @app.post("/upload/")
 async def upload_file(upload_file: UploadFile = File(...)):

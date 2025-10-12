@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.0](https://github.com/dk521123/job-info-extractor/compare/v0.0.3...v0.1.0) (2025-10-12)
+
+
+### Features
+
+* Implement UI by vite/react/Material-UI (MUI) ([cc5f95e](https://github.com/dk521123/job-info-extractor/commit/cc5f95e107deca05e9b91f7dc5be1821c7b42ea2))
+
 ## [0.0.3](https://github.com/dk521123/job-info-extractor/compare/v0.0.2...v0.0.3) (2025-10-12)
 
 

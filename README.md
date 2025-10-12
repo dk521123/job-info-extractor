@@ -4,7 +4,7 @@
 ```
 job-info-extractor/
 ├── .github/workflows/release-please.yml ... To manage for release
-├── backend
+├── backend ... FastAPI
 │   ├── app
 │   ├── app
 │   │   ├── main.py
@@ -14,7 +14,7 @@ job-info-extractor/
 │   │       └── job_parse.py
 │   ├── Dockerfile
 │   └── requirements.txt
-├── frontend
+├── frontend ... React + Material-UI (MUI)
 │   ├── Dockerfile
 │   └── index.html
 └── docker-compose.yml
