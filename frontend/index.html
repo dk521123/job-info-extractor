@@ -1,38 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>OCR Upload</title>
-</head>
-<body>
-    <h1>Upload Image or PDF</h1>
-    <input type="file" id="fileInput" />
-    <button onclick="uploadFile()">Upload</button>
-    <pre id="result"></pre>
-
-    <script>
-async function uploadFile() {
-    const fileInput = document.getElementById("fileInput");
-    const file = fileInput.files[0];
-    const formData = new FormData();
-    formData.append("upload_file", file);
-
-    try {
-        const response = await fetch("http://localhost:8000/upload/", {
-            method: "POST",
-            body: formData,
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error: ${response.status}`);
-        }
-
-        const result = await response.json();
-        document.getElementById("result").innerText = JSON.stringify(result, null, 2);
-    } catch (error) {
-        console.error("Upload failed:", error);
-        alert("Upload failed. Check console for details.");
-    }
-}
-    </script>
-</body>
+<!doctype html>
+<html lang="jp">
+  <head>
+    <meta charset="UTF-8" />
+    <title>main</title>
+  </head>
+  <body>
+    <div id="root">Main</div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

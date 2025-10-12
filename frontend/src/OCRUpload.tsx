@@ -1,0 +1,103 @@
+import React, { useRef, useState } from 'react';
+import {
+  Box,
+  Button,
+  Typography,
+  Input,
+  Paper,
+  CircularProgress,
+  Alert
+} from '@mui/material';
+
+type OCRResult = {
+  text: string;
+  confidence?: number;
+};
+
+const OCRUpload: React.FC = () => {
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [result, setResult] = useState<OCRResult | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const uploadFile = async () => {
+    const file = fileInputRef.current?.files?.[0];
+    if (!file) {
+      alert('Please select a file first.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('upload_file', file);
+
+    setLoading(true);
+    setError(null);
+    setResult(null);
+
+    try {
+      const response = await fetch('http://localhost:8000/upload/', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+
+      const data: OCRResult = await response.json();
+      setResult(data);
+    } catch (err: any) {
+      console.error('Upload failed:', err);
+      setError('Upload failed. Check console for details.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Box sx={{ maxWidth: 600, margin: 'auto', padding: 4 }}>
+      <Typography variant="h4" gutterBottom>
+        Upload Image or PDF
+      </Typography>
+
+      <Input
+        type="file"
+        inputRef={fileInputRef}
+        sx={{ mb: 2 }}
+      />
+
+      <Box>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={uploadFile}
+          disabled={loading}
+        >
+          {loading ? <CircularProgress size={24} color="inherit" /> : 'Upload'}
+        </Button>
+      </Box>
+
+      {error && (
+        <Alert severity="error" sx={{ mt: 2 }}>
+          {error}
+        </Alert>
+      )}
+
+      {result && (
+        <Paper elevation={3} sx={{ mt: 4, p: 2, whiteSpace: 'pre-wrap' }}>
+          <Typography variant="h6">OCR Result:</Typography>
+          <Typography variant="body1">
+            {result.text}
+          </Typography>
+          {result.confidence !== undefined && (
+            <Typography variant="body2" color="text.secondary">
+              Confidence: {Math.round(result.confidence * 100)}%
+            </Typography>
+          )}
+        </Paper>
+      )}
+    </Box>
+  );
+};
+
+export default OCRUpload;
