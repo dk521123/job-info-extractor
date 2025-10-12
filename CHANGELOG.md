@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.1.0](https://github.com/dk521123/job-info-extractor/compare/v0.0.1...v0.1.0) (2025-10-12)
+
+
+### Features
+
+* Implement UI by vite/react/Material-UI (MUI) ([cc5f95e](https://github.com/dk521123/job-info-extractor/commit/cc5f95e107deca05e9b91f7dc5be1821c7b42ea2))
+* To implement list view of job info ([360efe5](https://github.com/dk521123/job-info-extractor/commit/360efe50db2ea180c7809ee50bbb94cd54ea35f5))
+* To implement search ([5003925](https://github.com/dk521123/job-info-extractor/commit/5003925d1bce537a250ec20a7c6485cf124e8c92))
+* To implement serach ([0bbc50a](https://github.com/dk521123/job-info-extractor/commit/0bbc50a1d9b6819df9b7c26c5737b83af60ce17e))
+
+
+### Bug Fixes
+
+* test ([9bbd78e](https://github.com/dk521123/job-info-extractor/commit/9bbd78e92b42df04a7c135144b27095e1537bd30))
+* To add PassFile for pgadmin ([209ea0b](https://github.com/dk521123/job-info-extractor/commit/209ea0b61b4bae98323bb7cab7d1a46f0a7ac82c))
+* To implement pagination ([ba46783](https://github.com/dk521123/job-info-extractor/commit/ba4678336ff1446d49e3222151fa4d3a5262f912))
+* To modify pgadmin and so on ([9a76b36](https://github.com/dk521123/job-info-extractor/commit/9a76b3630130eb95bb803b082ae0c2a777169df6))
+* To modify pgadmin and so on ([e0c523c](https://github.com/dk521123/job-info-extractor/commit/e0c523c3455b962f2ee60c2398d3162fd0ae9341))
+
 ## [0.0.1](https://github.com/dk521123/job-info-extractor/compare/v0.2.0...v0.0.1) (2025-10-12)
 
 
