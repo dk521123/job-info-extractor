@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3](https://github.com/dk521123/job-info-extractor/compare/v0.0.2...v0.0.3) (2025-10-12)
+
+
+### Bug Fixes
+
+* To add PassFile for pgadmin ([209ea0b](https://github.com/dk521123/job-info-extractor/commit/209ea0b61b4bae98323bb7cab7d1a46f0a7ac82c))
+
 ## [0.0.2](https://github.com/dk521123/job-info-extractor/compare/v0.0.1...v0.0.2) (2025-10-11)
 
 
