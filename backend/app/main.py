@@ -2,7 +2,7 @@ from asyncio.log import logger
 import os
 from typing import List
 
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, Query
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.utils.job_parse import JobParser
@@ -52,8 +52,8 @@ app = init_app()
 db_handler = init_db()
 
 @app.get("/list/", response_model=List[schemas.JobInfoResponse])
-def get_job_info_list():
-    job_info_list = db_handler.get_all_job_info()
+def get_job_info_list(limit: int = Query(10, ge=1), offset: int = Query(0, ge=0)):
+    job_info_list = db_handler.get_job_info(limit=limit, offset=offset)
     return job_info_list
 
 @app.post("/upload/")

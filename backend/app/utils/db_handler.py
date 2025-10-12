@@ -54,9 +54,11 @@ class DbHandler(object):
         self.session.add(job_info)
         self.session.commit()
 
-    def get_all_job_info(self):
-        return self.session.query(JobInfo).all()
-    
+    def get_job_info(self, limit: int, offset: int, is_desc: bool = True) -> Any:
+        order = JobInfo.created_at.desc() if is_desc else JobInfo.created_at.asc()
+        return self.session.query(JobInfo).order_by(
+            order).offset(offset).limit(limit).all()
+
     def close(self):
         self.session.close()
     
