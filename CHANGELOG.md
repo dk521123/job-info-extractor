@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/dk521123/job-info-extractor/compare/v0.1.0...v0.2.0) (2025-10-12)
+
+
+### Features
+
+* To implement list view of job info ([360efe5](https://github.com/dk521123/job-info-extractor/commit/360efe50db2ea180c7809ee50bbb94cd54ea35f5))
+
 ## [0.1.0](https://github.com/dk521123/job-info-extractor/compare/v0.0.3...v0.1.0) (2025-10-12)
 
 
