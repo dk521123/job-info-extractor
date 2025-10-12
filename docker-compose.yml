@@ -19,6 +19,7 @@ services:
     volumes:
       - volume_pgadmin:/var/lib/pgadmin
       - ./develop_only/pgadmin/servers.json:/pgadmin4/servers.json
+      - ./develop_only/pgadmin/pgpass:/pgpass
     env_file:
       - .env
     depends_on:
