@@ -10,6 +10,7 @@ import {
   CircularProgress,
   Button,
   Stack,
+  TextField
 } from '@mui/material';
 
 type JobInfo = {
@@ -30,12 +31,22 @@ const ItemList: React.FC = () => {
   const [jobs, setJobs] = useState<JobInfo[]>([]);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [query, setQuery] = useState('');
 
-  const fetchJobs = async (offsetValue: number) => {
+  const fetchJobs = async (offsetValue: number, searchQuery: string) => {
     setLoading(true);
     try {
+      const params = new URLSearchParams({
+        limit: LIMIT.toString(),
+        offset: offsetValue.toString(),
+      });
+      if (searchQuery) {
+        params.append('search', searchQuery);
+      }
+
       const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/list?limit=${LIMIT}&offset=${offsetValue}`
+        `${import.meta.env.VITE_API_BASE_URL}/list?${params.toString()}`
       );
       if (!response.ok) throw new Error(`Error: ${response.status}`);
       const data = await response.json();
@@ -48,8 +59,13 @@ const ItemList: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchJobs(offset);
-  }, [offset]);
+    fetchJobs(offset, query);
+  }, [offset, query]);
+
+  const handleSearch = () => {
+    setOffset(0);
+    setQuery(search);
+  };
 
   const handleNext = () => {
     setOffset((prev) => prev + LIMIT);
@@ -64,6 +80,18 @@ const ItemList: React.FC = () => {
       <Typography variant="h4" gutterBottom>
         Job Listings
       </Typography>
+
+      <Stack direction="row" spacing={2} mb={3}>
+        <TextField
+          fullWidth
+          label="Search (Company Name, Position, Location)"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <Button variant="contained" onClick={handleSearch}>
+          Search
+        </Button>
+      </Stack>
 
       {loading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
@@ -87,7 +115,6 @@ const ItemList: React.FC = () => {
                         </Typography>
                         <Typography variant="caption" display="block" component="span">
                           Created at: {new Date(job.created_at || '').toLocaleString()}
-                          | Updated at: {new Date(job.updated_at || '').toLocaleString()}
                         </Typography>
                       </>
                     }

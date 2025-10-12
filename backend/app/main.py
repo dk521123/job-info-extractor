@@ -52,8 +52,14 @@ app = init_app()
 db_handler = init_db()
 
 @app.get("/list/", response_model=List[schemas.JobInfoResponse])
-def get_job_info_list(limit: int = Query(10, ge=1), offset: int = Query(0, ge=0)):
-    job_info_list = db_handler.get_job_info(limit=limit, offset=offset)
+def get_job_info_list(
+    limit: int = Query(10, ge=1),
+    offset: int = Query(0, ge=0),
+    is_desc: bool = Query(True),
+    search: str = Query(None)
+):
+    job_info_list = db_handler.get_job_info(
+        limit=limit, offset=offset, is_desc=is_desc, search=search)
     return job_info_list
 
 @app.post("/upload/")

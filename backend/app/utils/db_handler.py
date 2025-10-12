@@ -2,7 +2,7 @@ import logging
 from datetime import datetime, timezone 
 from typing import Any, Text
 
-from sqlalchemy import DateTime, create_engine, Column, Integer, Text
+from sqlalchemy import DateTime, create_engine, Column, Integer, Text, or_
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import DeclarativeBase
 
@@ -54,10 +54,25 @@ class DbHandler(object):
         self.session.add(job_info)
         self.session.commit()
 
-    def get_job_info(self, limit: int, offset: int, is_desc: bool = True) -> Any:
+    def get_job_info(
+            self, limit: int,
+            offset: int,
+            is_desc: bool = True,
+            search: str = None
+        ) -> Any:
+        query = self.session.query(JobInfo)
+
         order = JobInfo.created_at.desc() if is_desc else JobInfo.created_at.asc()
-        return self.session.query(JobInfo).order_by(
-            order).offset(offset).limit(limit).all()
+        if search:
+            search_term = f"%{search.lower()}%"
+            query = query.filter(
+                or_(
+                    JobInfo.company_name.ilike(search_term),
+                    JobInfo.position.ilike(search_term),
+                    JobInfo.location.ilike(search_term),
+                )
+            )
+        return query.order_by(order).offset(offset).limit(limit).all()
 
     def close(self):
         self.session.close()
