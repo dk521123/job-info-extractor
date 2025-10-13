@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/dk521123/job-info-extractor/compare/v0.3.0...v0.3.1) (2025-10-13)
+
+
+### Bug Fixes
+
+* To modify multilang ([28a9a58](https://github.com/dk521123/job-info-extractor/commit/28a9a580997ee33ea405b60d1c15bc2769ff997b))
+
 ## [0.3.0](https://github.com/dk521123/job-info-extractor/compare/v0.2.0...v0.3.0) (2025-10-13)
 ## [0.1.0](https://github.com/dk521123/job-info-extractor/compare/v0.0.1...v0.1.0) (2025-10-12)
 
