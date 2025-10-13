@@ -1,0 +1,15 @@
+{
+  "english": "English",
+  "japanese": "日本語",
+  "jobList": "求人一覧",
+  "next": "次へ",
+  "prev": "前へ",
+  "searchLabel": "検索 (会社名、職種、勤務地)",
+  "search": "検索",
+  "at": "",
+  "file": "ファイル",
+  "createdAt": "作成日時",
+  "upload": "画像またはPDFをアップロード",
+  "result": "結果",
+  "errorToUpload": "ファイルを選択してください。"
+}

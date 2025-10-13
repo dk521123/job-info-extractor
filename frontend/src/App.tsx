@@ -1,13 +1,30 @@
 import React from 'react';
-import { CssBaseline, Container } from '@mui/material';
-import OCRUpload from './OCRUpload';
+import { CssBaseline, Container, Button, Stack } from '@mui/material';
+import Upload from './Upload';
 import ItemList from './ItemList';
+import { useTranslation } from 'react-i18next';
 
 function App() {
+  const { t, i18n } = useTranslation();
+
+  const handleChangeLanguage = (lang: 'en' | 'ja') => {
+    i18n.changeLanguage(lang);
+  };
+
   return (
     <React.Fragment>
+      <div style={{ padding: 20 }}>
+        <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
+          <Button variant="contained" onClick={() => handleChangeLanguage('en')}>
+            {t('english')}
+          </Button>
+          <Button variant="outlined" onClick={() => handleChangeLanguage('ja')}>
+            {t('japanese')}
+          </Button>
+        </Stack>
+      </div>
       <div>
-        <OCRUpload />
+        <Upload />
       </div>
       <CssBaseline />
       <Container>

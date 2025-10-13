@@ -8,17 +8,19 @@ import {
   CircularProgress,
   Alert
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
-type OCRResult = {
+type ResponseResult = {
   text: string;
   confidence?: number;
 };
 
-const OCRUpload: React.FC = () => {
+const Upload: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [result, setResult] = useState<OCRResult | null>(null);
+  const [result, setResult] = useState<ResponseResult | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   const uploadFile = async () => {
     const file = fileInputRef.current?.files?.[0];
@@ -44,8 +46,8 @@ const OCRUpload: React.FC = () => {
         throw new Error(`HTTP error: ${response.status}`);
       }
 
-      const data: OCRResult = await response.json();
-      setResult(data);
+      const result: ResponseResult = await response.json();
+      setResult(result);
     } catch (err: any) {
       console.error('Upload failed:', err);
       setError('Upload failed. Check console for details.');
@@ -57,7 +59,7 @@ const OCRUpload: React.FC = () => {
   return (
     <Box sx={{ maxWidth: 600, margin: 'auto', padding: 4 }}>
       <Typography variant="h4" gutterBottom>
-        Upload Image or PDF
+        {t('upload')}
       </Typography>
 
       <Input
@@ -85,7 +87,7 @@ const OCRUpload: React.FC = () => {
 
       {result && (
         <Paper elevation={3} sx={{ mt: 4, p: 2, whiteSpace: 'pre-wrap' }}>
-          <Typography variant="h6">OCR Result:</Typography>
+          <Typography variant="h6">{t('result')}:</Typography>
           <Typography variant="body1">
             {result.text}
           </Typography>
@@ -100,4 +102,4 @@ const OCRUpload: React.FC = () => {
   );
 };
 
-export default OCRUpload;
+export default Upload;
