@@ -106,7 +106,7 @@ const ItemList: React.FC = () => {
               <React.Fragment key={job.id}>
                 <ListItem alignItems="flex-start">
                   <ListItemText
-                    primary={`${job.position} {t('at')} ${job.company_name}`}
+                    primary={`${job.position} @ ${job.company_name}`}
                     secondary={
                       <>
                         <Typography variant="body2" color="text.secondary" component="span">
