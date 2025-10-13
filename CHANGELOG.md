@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://github.com/dk521123/job-info-extractor/compare/v0.2.0...v0.3.0) (2025-10-13)
+
+
+### Features
+
+* Implement Multilingual support [#41](https://github.com/dk521123/job-info-extractor/issues/41) ([259ab53](https://github.com/dk521123/job-info-extractor/commit/259ab539526eb1fec544b7a6674ffffe79b7b539))
+* To implement serach ([0bbc50a](https://github.com/dk521123/job-info-extractor/commit/0bbc50a1d9b6819df9b7c26c5737b83af60ce17e))
+
+
+### Bug Fixes
+
+* To implement pagination ([ba46783](https://github.com/dk521123/job-info-extractor/commit/ba4678336ff1446d49e3222151fa4d3a5262f912))
+
 ## [0.2.0](https://github.com/dk521123/job-info-extractor/compare/v0.1.0...v0.2.0) (2025-10-12)
 
 
