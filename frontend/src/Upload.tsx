@@ -59,7 +59,7 @@ const Upload: React.FC = () => {
   return (
     <Box sx={{ maxWidth: 600, margin: 'auto', padding: 4 }}>
       <Typography variant="h4" gutterBottom>
-        {t('upload')}
+        {t('uploadTitle')}
       </Typography>
 
       <Input
@@ -75,7 +75,7 @@ const Upload: React.FC = () => {
           onClick={uploadFile}
           disabled={loading}
         >
-          {loading ? <CircularProgress size={24} color="inherit" /> : 'Upload'}
+          {loading ? <CircularProgress size={24} color="inherit" /> : t('upload')}
         </Button>
       </Box>
 
