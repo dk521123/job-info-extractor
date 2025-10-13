@@ -78,7 +78,7 @@ const ItemList: React.FC = () => {
   return (
     <Box sx={{ maxWidth: 800, mx: 'auto', mt: 4 }}>
       <Typography variant="h4" gutterBottom>
-        Job Listings
+        Job List
       </Typography>
 
       <Stack direction="row" spacing={2} mb={3}>

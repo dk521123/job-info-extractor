@@ -9,14 +9,14 @@ import {
   Alert
 } from '@mui/material';
 
-type OCRResult = {
+type ResponseResult = {
   text: string;
   confidence?: number;
 };
 
-const OCRUpload: React.FC = () => {
+const Upload: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [result, setResult] = useState<OCRResult | null>(null);
+  const [result, setResult] = useState<ResponseResult | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -44,8 +44,8 @@ const OCRUpload: React.FC = () => {
         throw new Error(`HTTP error: ${response.status}`);
       }
 
-      const data: OCRResult = await response.json();
-      setResult(data);
+      const result: ResponseResult = await response.json();
+      setResult(result);
     } catch (err: any) {
       console.error('Upload failed:', err);
       setError('Upload failed. Check console for details.');
@@ -100,4 +100,4 @@ const OCRUpload: React.FC = () => {
   );
 };
 
-export default OCRUpload;
+export default Upload;

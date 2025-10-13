@@ -1,13 +1,13 @@
 import React from 'react';
 import { CssBaseline, Container } from '@mui/material';
-import OCRUpload from './OCRUpload';
+import Upload from './Upload';
 import ItemList from './ItemList';
 
 function App() {
   return (
     <React.Fragment>
       <div>
-        <OCRUpload />
+        <Upload />
       </div>
       <CssBaseline />
       <Container>
