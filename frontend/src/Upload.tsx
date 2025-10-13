@@ -8,6 +8,7 @@ import {
   CircularProgress,
   Alert
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 type ResponseResult = {
   text: string;
@@ -19,6 +20,7 @@ const Upload: React.FC = () => {
   const [result, setResult] = useState<ResponseResult | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   const uploadFile = async () => {
     const file = fileInputRef.current?.files?.[0];
@@ -57,7 +59,7 @@ const Upload: React.FC = () => {
   return (
     <Box sx={{ maxWidth: 600, margin: 'auto', padding: 4 }}>
       <Typography variant="h4" gutterBottom>
-        Upload Image or PDF
+        {t('upload')}
       </Typography>
 
       <Input
@@ -85,7 +87,7 @@ const Upload: React.FC = () => {
 
       {result && (
         <Paper elevation={3} sx={{ mt: 4, p: 2, whiteSpace: 'pre-wrap' }}>
-          <Typography variant="h6">OCR Result:</Typography>
+          <Typography variant="h6">{t('result')}:</Typography>
           <Typography variant="body1">
             {result.text}
           </Typography>

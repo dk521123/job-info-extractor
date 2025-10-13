@@ -1,0 +1,15 @@
+{
+  "english": "English",
+  "japanese": "Japanese",
+  "jobList": "Job List",
+  "next": "Next",
+  "prev": "Prev",
+  "searchLabel": "Search (Company Name, Position, Location)",
+  "search": "Search",
+  "at": "at",
+  "file": "File",
+  "createdAt": "Created at",
+  "upload": "Upload Image or PDF",
+  "result": "Result",
+  "errorToUpload": "Please select a file first."
+}

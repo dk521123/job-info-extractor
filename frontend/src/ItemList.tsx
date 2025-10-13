@@ -12,6 +12,7 @@ import {
   Stack,
   TextField
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 type JobInfo = {
   id: number;
@@ -33,6 +34,7 @@ const ItemList: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [query, setQuery] = useState('');
+  const { t } = useTranslation();
 
   const fetchJobs = async (offsetValue: number, searchQuery: string) => {
     setLoading(true);
@@ -78,18 +80,18 @@ const ItemList: React.FC = () => {
   return (
     <Box sx={{ maxWidth: 800, mx: 'auto', mt: 4 }}>
       <Typography variant="h4" gutterBottom>
-        Job List
+        {t('jobList')}
       </Typography>
 
       <Stack direction="row" spacing={2} mb={3}>
         <TextField
           fullWidth
-          label="Search (Company Name, Position, Location)"
+          label={t('searchLabel')}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
         <Button variant="contained" onClick={handleSearch}>
-          Search
+          {t('search')}
         </Button>
       </Stack>
 
@@ -104,17 +106,17 @@ const ItemList: React.FC = () => {
               <React.Fragment key={job.id}>
                 <ListItem alignItems="flex-start">
                   <ListItemText
-                    primary={`${job.position} at ${job.company_name}`}
+                    primary={`${job.position} {t('at')} ${job.company_name}`}
                     secondary={
                       <>
                         <Typography variant="body2" color="text.secondary" component="span">
                           {job.location} | {job.salary}
                         </Typography>
                         <Typography variant="caption" display="block" component="span">
-                          File: {job.file_name} ({job.file_type})
+                          {t('file')}: {job.file_name} ({job.file_type})
                         </Typography>
                         <Typography variant="caption" display="block" component="span">
-                          Created at: {new Date(job.created_at || '').toLocaleString()}
+                          {t('createdAt')}: {new Date(job.created_at || '').toLocaleString()}
                         </Typography>
                       </>
                     }
@@ -129,10 +131,10 @@ const ItemList: React.FC = () => {
 
       <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
         <Button variant="outlined" onClick={handlePrevious} disabled={offset === 0}>
-          Prev
+          {t('prev')}
         </Button>
         <Button variant="outlined" onClick={handleNext} disabled={jobs.length < LIMIT}>
-          Next
+          {t('next')}
         </Button>
       </Stack>
     </Box>
