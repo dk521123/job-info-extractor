@@ -1,7 +1,7 @@
 import React from 'react';
 import { CssBaseline, Container, Button, Stack } from '@mui/material';
-import Upload from './Upload';
-import ItemList from './ItemList';
+import Upload from './components/Upload';
+import ItemList from './components/ItemList';
 import { useTranslation } from 'react-i18next';
 
 function App() {
