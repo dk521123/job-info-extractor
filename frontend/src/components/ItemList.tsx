@@ -93,7 +93,15 @@ export const ItemList: React.FC = () => {
           <List>
             {jobs.map((job, index) => (
               <React.Fragment key={job.id}>
-                <ListItem alignItems="flex-start">
+                <ListItem
+                  alignItems="flex-start"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: 'action.hover',
+                    },
+                    cursor: "pointer"
+                  }}
+                >
                   <ListItemText
                     primary={`${job.position} @ ${job.company_name}`}
                     secondary={
