@@ -88,7 +88,7 @@ async def upload_file(upload_file: UploadFile = File(...)):
     if file_type == "other":
         response = {
             "status": "error",
-            "error": "Unsupported file type"
+            "message": "Unsupported file type"
         }
     else:
         job_info = JobParser(text_list).parse()

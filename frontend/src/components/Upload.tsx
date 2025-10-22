@@ -11,11 +11,13 @@ import {
 import { useTranslation } from 'react-i18next';
 
 type ResponseResult = {
-  text: string;
-  confidence?: number;
+  status: string;
+  message?: string;
+  filename?: string;
+  file_type?: string;
 };
 
-const Upload: React.FC = () => {
+export const Upload: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [result, setResult] = useState<ResponseResult | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -89,11 +91,21 @@ const Upload: React.FC = () => {
         <Paper elevation={3} sx={{ mt: 4, p: 2, whiteSpace: 'pre-wrap' }}>
           <Typography variant="h6">{t('result')}:</Typography>
           <Typography variant="body1">
-            {result.text}
+            {result.status}
           </Typography>
-          {result.confidence !== undefined && (
+          {result.message && (
             <Typography variant="body2" color="text.secondary">
-              Confidence: {Math.round(result.confidence * 100)}%
+              Message: {result.message}
+            </Typography>
+          )}
+          {result.filename !== undefined && (
+            <Typography variant="body2" color="text.secondary">
+              Filename: {result.filename}
+            </Typography>
+          )}
+          {result.file_type !== undefined && (
+            <Typography variant="body2" color="text.secondary">
+              File Type: {result.file_type}
             </Typography>
           )}
         </Paper>

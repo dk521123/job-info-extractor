@@ -13,22 +13,11 @@ import {
   TextField
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-
-type JobInfo = {
-  id: number;
-  file_name: string;
-  file_type: string;
-  company_name: string;
-  position: string;
-  location: string;
-  salary: string;
-  created_at?: string;
-  updated_at?: string;
-};
+import type { JobInfo } from '../types/JobInfo';
 
 const LIMIT = 5;
 
-const ItemList: React.FC = () => {
+export const ItemList: React.FC = () => {
   const [jobs, setJobs] = useState<JobInfo[]>([]);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(true);
