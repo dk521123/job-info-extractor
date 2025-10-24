@@ -54,6 +54,20 @@ class DbHandler(object):
         self.session.add(job_info)
         self.session.commit()
 
+    def update_job_info(self, job_id: int, updated_job_info: JobInfo):
+        job_info = self.get_job_info_by_id(job_id)
+        if not job_info:
+            raise Exception(f"Job info with id {job_id} not found")
+
+        job_info.file_name = updated_job_info.file_name
+        job_info.file_type = updated_job_info.file_type
+        job_info.company_name = updated_job_info.company_name
+        job_info.position = updated_job_info.position
+        job_info.location = updated_job_info.location
+        job_info.salary = updated_job_info.salary
+        job_info.updated_at = datetime.now(timezone.utc)
+        self.session.commit()
+
     def get_job_info(
             self, limit: int,
             offset: int,

@@ -13,6 +13,7 @@ import {
   TextField
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { ItemDialog } from './ItemDialog';
 import type { JobInfo } from '../types/JobInfo';
 
 const LIMIT = 5;
@@ -23,6 +24,9 @@ export const ItemList: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [query, setQuery] = useState('');
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedJob, setSelectedJob] = useState<JobInfo | null>(null);
+
   const { t } = useTranslation();
 
   const fetchJobs = async (offsetValue: number, searchQuery: string) => {
@@ -66,6 +70,18 @@ export const ItemList: React.FC = () => {
     setOffset((prev) => Math.max(prev - LIMIT, 0));
   };
 
+  const handleSelect = (jobInfo: JobInfo) => {
+    setSelectedJob(jobInfo);
+    setOpenDialog(true);
+  };
+
+  const handleSave = (updatedJobInfo: JobInfo) => {
+    setJobs((prev) =>
+      prev.map((jobInfo) => (jobInfo.id === updatedJobInfo.id ? updatedJobInfo : jobInfo))
+    );
+    setOpenDialog(false);
+  };
+
   return (
     <Box sx={{ maxWidth: 800, mx: 'auto', mt: 4 }}>
       <Typography variant="h4" gutterBottom>
@@ -101,6 +117,7 @@ export const ItemList: React.FC = () => {
                     },
                     cursor: "pointer"
                   }}
+                  onClick={() => handleSelect(job)}
                 >
                   <ListItemText
                     primary={`${job.position} @ ${job.company_name}`}
@@ -108,12 +125,6 @@ export const ItemList: React.FC = () => {
                       <>
                         <Typography variant="body2" color="text.secondary" component="span">
                           {job.location} | {job.salary}
-                        </Typography>
-                        <Typography variant="caption" display="block" component="span">
-                          {t('file')}: {job.file_name} ({job.file_type})
-                        </Typography>
-                        <Typography variant="caption" display="block" component="span">
-                          {t('createdAt')}: {new Date(job.created_at || '').toLocaleString()}
                         </Typography>
                       </>
                     }
@@ -134,6 +145,14 @@ export const ItemList: React.FC = () => {
           {t('next')}
         </Button>
       </Stack>
+      <div>
+        <ItemDialog
+          openDialog={openDialog}
+          onClose={() => setOpenDialog(false)}
+          targetJobInfo={selectedJob ?? undefined}
+          onSave={handleSave}
+        />
+      </div>
     </Box>
   );
 };

@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from datetime import datetime
 
-class JobInfoResponse(BaseModel):
+class JobInfo(BaseModel):
     id: int
     file_name: str
     file_type: str
