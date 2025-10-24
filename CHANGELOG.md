@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.2](https://github.com/dk521123/job-info-extractor/compare/v0.3.1...v0.3.2) (2025-10-24)
+
+
+### Bug Fixes
+
+* For docker error in backend ([4b1130b](https://github.com/dk521123/job-info-extractor/commit/4b1130bcb0224c9398754a84eddf14be2d14f1ed))
+* To add update job info ([864c024](https://github.com/dk521123/job-info-extractor/commit/864c0248401c0f50fd292dfa56499eb0de6c2f6a))
+
 ## [0.3.1](https://github.com/dk521123/job-info-extractor/compare/v0.3.0...v0.3.1) (2025-10-13)
 
 
