@@ -51,7 +51,7 @@ def init_db():
 app = init_app()
 db_handler = init_db()
 
-@app.get("/list/", response_model=List[schemas.JobInfoResponse])
+@app.get("/list/", response_model=List[schemas.JobInfo])
 def get_job_info_list(
     limit: int = Query(10, ge=1),
     offset: int = Query(0, ge=0),
@@ -61,6 +61,23 @@ def get_job_info_list(
     job_info_list = db_handler.get_job_info(
         limit=limit, offset=offset, is_desc=is_desc, search=search)
     return job_info_list
+
+
+@app.put("/update/{job_id}")
+def update_job_info(job_id: int, updated_job_info: schemas.JobInfo):
+    try:
+        # Update the job info in the database
+        db_handler.update_job_info(job_id, updated_job_info)
+        return {
+            "status": "success",
+            "message": "Job info updated successfully"
+        }
+    except Exception as ex:
+        logger.error(f"Update job info error: {ex}")
+        return {
+            "status": "failed",
+            "message": str(ex)
+        }
 
 @app.post("/upload/")
 async def upload_file(upload_file: UploadFile = File(...)):
@@ -72,8 +89,8 @@ async def upload_file(upload_file: UploadFile = File(...)):
     except Exception as ex:
         logger.error(f"File upload error: {ex}")
         return {
-            "status": "error",
-            "error": str(ex)
+            "status": "failed",
+            "message": str(ex)
         }
 
     if upload_file.content_type.startswith("image/"):
@@ -87,8 +104,8 @@ async def upload_file(upload_file: UploadFile = File(...)):
 
     if file_type == "other":
         response = {
-            "status": "error",
-            "error": "Unsupported file type"
+            "status": "failed",
+            "message": "Unsupported file type"
         }
     else:
         job_info = JobParser(text_list).parse()

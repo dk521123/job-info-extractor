@@ -13,27 +13,20 @@ import {
   TextField
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-
-type JobInfo = {
-  id: number;
-  file_name: string;
-  file_type: string;
-  company_name: string;
-  position: string;
-  location: string;
-  salary: string;
-  created_at?: string;
-  updated_at?: string;
-};
+import { ItemDialog } from './ItemDialog';
+import type { JobInfo } from '../types/JobInfo';
 
 const LIMIT = 5;
 
-const ItemList: React.FC = () => {
+export const ItemList: React.FC = () => {
   const [jobs, setJobs] = useState<JobInfo[]>([]);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [query, setQuery] = useState('');
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedJob, setSelectedJob] = useState<JobInfo | null>(null);
+
   const { t } = useTranslation();
 
   const fetchJobs = async (offsetValue: number, searchQuery: string) => {
@@ -77,6 +70,18 @@ const ItemList: React.FC = () => {
     setOffset((prev) => Math.max(prev - LIMIT, 0));
   };
 
+  const handleSelect = (jobInfo: JobInfo) => {
+    setSelectedJob(jobInfo);
+    setOpenDialog(true);
+  };
+
+  const handleSave = (updatedJobInfo: JobInfo) => {
+    setJobs((prev) =>
+      prev.map((jobInfo) => (jobInfo.id === updatedJobInfo.id ? updatedJobInfo : jobInfo))
+    );
+    setOpenDialog(false);
+  };
+
   return (
     <Box sx={{ maxWidth: 800, mx: 'auto', mt: 4 }}>
       <Typography variant="h4" gutterBottom>
@@ -104,19 +109,22 @@ const ItemList: React.FC = () => {
           <List>
             {jobs.map((job, index) => (
               <React.Fragment key={job.id}>
-                <ListItem alignItems="flex-start">
+                <ListItem
+                  alignItems="flex-start"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: 'action.hover',
+                    },
+                    cursor: "pointer"
+                  }}
+                  onClick={() => handleSelect(job)}
+                >
                   <ListItemText
                     primary={`${job.position} @ ${job.company_name}`}
                     secondary={
                       <>
                         <Typography variant="body2" color="text.secondary" component="span">
                           {job.location} | {job.salary}
-                        </Typography>
-                        <Typography variant="caption" display="block" component="span">
-                          {t('file')}: {job.file_name} ({job.file_type})
-                        </Typography>
-                        <Typography variant="caption" display="block" component="span">
-                          {t('createdAt')}: {new Date(job.created_at || '').toLocaleString()}
                         </Typography>
                       </>
                     }
@@ -137,6 +145,14 @@ const ItemList: React.FC = () => {
           {t('next')}
         </Button>
       </Stack>
+      <div>
+        <ItemDialog
+          openDialog={openDialog}
+          onClose={() => setOpenDialog(false)}
+          targetJobInfo={selectedJob ?? undefined}
+          onSave={handleSave}
+        />
+      </div>
     </Box>
   );
 };
