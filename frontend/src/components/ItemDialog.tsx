@@ -113,47 +113,48 @@ export const ItemDialog: React.FC<Props> = ({
               {errorMessage}
             </Alert>
           )}
+          <div style={{ padding: 10}}>
+            <Grid container spacing={2}>
+              {[
+                { label: t("companyName"), name: "company_name" },
+                { label: t("position"), name: "position" },
+                { label: t("location"), name: "location" },
+                { label: t("salary"), name: "salary" },
+              ].map((field) => (
+                <Grid item xs={12} sm={6} key={field.name}>
+                  <TextField
+                    fullWidth
+                    label={field.label}
+                    name={field.name}
+                    value={formData?.[field.name as keyof JobInfo] ?? ""}
+                    onChange={handleChange}
+                    error={!!fieldErrors[field.name]}
+                    helperText={fieldErrors[field.name]}
+                  />
+                </Grid>
+              ))}
+            </Grid>
 
-          <Grid container spacing={2}>
-            {[
-              { label: t("companyName"), name: "company_name" },
-              { label: t("position"), name: "position" },
-              { label: t("location"), name: "location" },
-              { label: t("salary"), name: "salary" },
-            ].map((field) => (
-              <Grid item xs={12} sm={6} key={field.name}>
-                <TextField
-                  fullWidth
-                  label={field.label}
-                  name={field.name}
-                  value={formData?.[field.name as keyof JobInfo] ?? ""}
-                  onChange={handleChange}
-                  error={!!fieldErrors[field.name]}
-                  helperText={fieldErrors[field.name]}
-                />
-              </Grid>
-            ))}
-          </Grid>
+            <Divider sx={{ my: 2 }} />
 
-          <Divider sx={{ my: 2 }} />
+            <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+              {t("systemInfo")}
+            </Typography>
 
-          <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-            {t("systemInfo")}
-          </Typography>
-
-          <Grid container spacing={2}>
-            {systemFields.map((field) => (
-              <Grid item xs={12} sm={6} key={field.name}>
-                <TextField
-                  fullWidth
-                  label={field.label}
-                  value={formData?.[field.name as keyof JobInfo] ?? ""}
-                  InputProps={{ readOnly: true }}
-                  variant="filled"
-                />
-              </Grid>
-            ))}
-          </Grid>
+            <Grid container spacing={2}>
+              {systemFields.map((field) => (
+                <Grid item xs={12} sm={6} key={field.name}>
+                  <TextField
+                    fullWidth
+                    label={field.label}
+                    value={formData?.[field.name as keyof JobInfo] ?? ""}
+                    InputProps={{ readOnly: true }}
+                    variant="filled"
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </div>
         </DialogContent>
 
         <DialogActions>
