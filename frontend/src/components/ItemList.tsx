@@ -10,7 +10,7 @@ import {
   CircularProgress,
   Button,
   Stack,
-  TextField
+  TextField,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { ItemDialog } from './ItemDialog';
@@ -18,7 +18,13 @@ import type { JobInfo } from '../types/JobInfo';
 
 const LIMIT = 5;
 
-export const ItemList: React.FC = () => {
+type Props = {
+  // Optional trigger to reload the list
+  reloadTrigger?: number;
+  onUploadComplete: () => void;
+};
+
+export const ItemList: React.FC<Props> = ({ reloadTrigger, onUploadComplete }) => {
   const [jobs, setJobs] = useState<JobInfo[]>([]);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -46,6 +52,8 @@ export const ItemList: React.FC = () => {
       if (!response.ok) throw new Error(`Error: ${response.status}`);
       const data = await response.json();
       setJobs(data);
+
+      onUploadComplete();
     } catch (err) {
       console.error('Failed to fetch jobs:', err);
     } finally {
@@ -53,9 +61,10 @@ export const ItemList: React.FC = () => {
     }
   };
 
+  // Refetch jobs when offset, query, or reloadTrigger changes
   useEffect(() => {
     fetchJobs(offset, query);
-  }, [offset, query]);
+  }, [offset, query, reloadTrigger]);
 
   const handleSearch = () => {
     setOffset(0);
@@ -115,18 +124,16 @@ export const ItemList: React.FC = () => {
                     '&:hover': {
                       backgroundColor: 'action.hover',
                     },
-                    cursor: "pointer"
+                    cursor: 'pointer',
                   }}
                   onClick={() => handleSelect(job)}
                 >
                   <ListItemText
                     primary={`${job.position} @ ${job.company_name}`}
                     secondary={
-                      <>
-                        <Typography variant="body2" color="text.secondary" component="span">
-                          {job.location} | {job.salary}
-                        </Typography>
-                      </>
+                      <Typography variant="body2" color="text.secondary" component="span">
+                        {job.location} | {job.salary}
+                      </Typography>
                     }
                   />
                 </ListItem>
@@ -145,14 +152,13 @@ export const ItemList: React.FC = () => {
           {t('next')}
         </Button>
       </Stack>
-      <div>
-        <ItemDialog
-          openDialog={openDialog}
-          onClose={() => setOpenDialog(false)}
-          targetJobInfo={selectedJob ?? undefined}
-          onSave={handleSave}
-        />
-      </div>
+
+      <ItemDialog
+        openDialog={openDialog}
+        onClose={() => setOpenDialog(false)}
+        targetJobInfo={selectedJob ?? undefined}
+        onSave={handleSave}
+      />
     </Box>
   );
 };

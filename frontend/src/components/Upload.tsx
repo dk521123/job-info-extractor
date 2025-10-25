@@ -11,14 +11,18 @@ import {
 import { useTranslation } from 'react-i18next';
 import type { RegisterResponse } from '../types/RegisterResponse';
 
-export const Upload: React.FC = () => {
+type UploadProps = {
+  onUploadComplete: () => void;
+};
+
+export const Upload: React.FC<UploadProps> = ({ onUploadComplete }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [result, setResult] = useState<RegisterResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const { t } = useTranslation();
 
-  const uploadFile = async () => {
+   const uploadFile = async () => {
     const file = fileInputRef.current?.files?.[0];
     if (!file) {
       alert('Please select a file first.');
@@ -44,6 +48,9 @@ export const Upload: React.FC = () => {
 
       const result: RegisterResponse = await response.json();
       setResult(result);
+
+      // Fire the callback to notify upload completion
+      onUploadComplete();
     } catch (err: any) {
       console.error('Upload failed:', err);
       setError('Upload failed. Check console for details.');
