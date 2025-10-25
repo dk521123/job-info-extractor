@@ -8,6 +8,11 @@ services:
       - 5432:5432
     env_file:
       - .env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
   # Only for development
   pgadmin:
     image: dpage/pgadmin4:9.8
@@ -23,7 +28,8 @@ services:
     env_file:
       - .env
     depends_on:
-      - db
+      db:
+        condition: service_healthy
   backend:
     build: ./backend
     container_name: backend_app
@@ -32,7 +38,8 @@ services:
     env_file:
       - .env
     depends_on:
-      - db
+      db:
+        condition: service_healthy
   frontend:
     build: ./frontend
     container_name: frontend_app
