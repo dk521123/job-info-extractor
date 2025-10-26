@@ -4,24 +4,40 @@ import {
   Button,
   Typography,
   Input,
-  Paper,
   CircularProgress,
-  Alert
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import type { RegisterResponse } from '../types/RegisterResponse';
 
-export const Upload: React.FC = () => {
+type UploadProps = {
+  onUploadComplete: () => void;
+};
+
+export const Upload: React.FC<UploadProps> = ({ onUploadComplete }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [result, setResult] = useState<RegisterResponse | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: 'success' | 'error' | 'info';
+  }>({ open: false, message: '', severity: 'info' });
+
   const { t } = useTranslation();
+
+  const handleSnackbarClose = () => {
+    setSnackbar((prev) => ({ ...prev, open: false }));
+  };
 
   const uploadFile = async () => {
     const file = fileInputRef.current?.files?.[0];
     if (!file) {
-      alert('Please select a file first.');
+      setSnackbar({
+        open: true,
+        message: 'Please select a file first.',
+        severity: 'error',
+      });
       return;
     }
 
@@ -29,8 +45,6 @@ export const Upload: React.FC = () => {
     formData.append('upload_file', file);
 
     setLoading(true);
-    setError(null);
-    setResult(null);
 
     try {
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/upload/`, {
@@ -43,10 +57,30 @@ export const Upload: React.FC = () => {
       }
 
       const result: RegisterResponse = await response.json();
-      setResult(result);
-    } catch (err: any) {
+      console.log('Upload result:', result);
+
+      // Set success Snackbar
+      setSnackbar({
+        open: true,
+        message: 'Upload successful!',
+        severity: 'success',
+      });
+
+      // Notify parent component
+      onUploadComplete();
+
+      // After upload, clear the file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    } catch (err) {
       console.error('Upload failed:', err);
-      setError('Upload failed. Check console for details.');
+      // Set failed Snackbar
+      setSnackbar({
+        open: true,
+        message: 'Upload failed. Please check the console.',
+        severity: 'error',
+      });
     } finally {
       setLoading(false);
     }
@@ -54,15 +88,11 @@ export const Upload: React.FC = () => {
 
   return (
     <Box sx={{ maxWidth: 600, margin: 'auto', padding: 4 }}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h5" gutterBottom>
         {t('uploadTitle')}
       </Typography>
 
-      <Input
-        type="file"
-        inputRef={fileInputRef}
-        sx={{ mb: 2 }}
-      />
+      <Input type="file" inputRef={fileInputRef} sx={{ mb: 2 }} />
 
       <Box>
         <Button
@@ -75,35 +105,21 @@ export const Upload: React.FC = () => {
         </Button>
       </Box>
 
-      {error && (
-        <Alert severity="error" sx={{ mt: 2 }}>
-          {error}
+      {/* Snackbar */}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbar.severity}
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
         </Alert>
-      )}
-
-      {result && (
-        <Paper elevation={3} sx={{ mt: 4, p: 2, whiteSpace: 'pre-wrap' }}>
-          <Typography variant="h6">{t('result')}:</Typography>
-          <Typography variant="body1">
-            {result.status}
-          </Typography>
-          {result.message && (
-            <Typography variant="body2" color="text.secondary">
-              Message: {result.message}
-            </Typography>
-          )}
-          {result.filename !== undefined && (
-            <Typography variant="body2" color="text.secondary">
-              Filename: {result.filename}
-            </Typography>
-          )}
-          {result.file_type !== undefined && (
-            <Typography variant="body2" color="text.secondary">
-              File Type: {result.file_type}
-            </Typography>
-          )}
-        </Paper>
-      )}
+      </Snackbar>
     </Box>
   );
 };

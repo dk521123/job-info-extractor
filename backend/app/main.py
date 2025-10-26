@@ -58,10 +58,11 @@ def get_job_info_list(
     is_desc: bool = Query(True),
     search: str = Query(None)
 ):
+    # search: None or string(e.g. "company_name:ABD position:Engineer")
+    logger.info(f"Get job info list with limit={limit}, offset={offset}, is_desc={is_desc}, search={search}")
     job_info_list = db_handler.get_job_info(
         limit=limit, offset=offset, is_desc=is_desc, search=search)
     return job_info_list
-
 
 @app.put("/update/{job_id}")
 def update_job_info(job_id: int, updated_job_info: schemas.JobInfo):

@@ -10,19 +10,24 @@ import {
   CircularProgress,
   Button,
   Stack,
-  TextField
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { ItemDialog } from './ItemDialog';
+import { SearchBar } from './SearchBar';
 import type { JobInfo } from '../types/JobInfo';
 
 const LIMIT = 5;
 
-export const ItemList: React.FC = () => {
+type Props = {
+  reloadTrigger?: number;
+  onUploadComplete: () => void;
+};
+
+export const ItemList: React.FC<Props> = ({ reloadTrigger, onUploadComplete }) => {
   const [jobs, setJobs] = useState<JobInfo[]>([]);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
+
   const [query, setQuery] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedJob, setSelectedJob] = useState<JobInfo | null>(null);
@@ -32,20 +37,20 @@ export const ItemList: React.FC = () => {
   const fetchJobs = async (offsetValue: number, searchQuery: string) => {
     setLoading(true);
     try {
-      const params = new URLSearchParams({
-        limit: LIMIT.toString(),
-        offset: offsetValue.toString(),
-      });
+      const params = new URLSearchParams();
+      params.append('limit', LIMIT.toString());
+      params.append('offset', offsetValue.toString());
       if (searchQuery) {
-        params.append('search', searchQuery);
+          params.append('search', searchQuery);
       }
+      console.log('Fetching jobs with params:', params.toString());
+      const url = `${import.meta.env.VITE_API_BASE_URL}/list/?${params.toString()}`;
+      const response = await fetch(url, { method: 'GET' });
 
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/list?${params.toString()}`
-      );
       if (!response.ok) throw new Error(`Error: ${response.status}`);
       const data = await response.json();
       setJobs(data);
+      onUploadComplete();
     } catch (err) {
       console.error('Failed to fetch jobs:', err);
     } finally {
@@ -53,14 +58,10 @@ export const ItemList: React.FC = () => {
     }
   };
 
+  // Get jobs on mount and when offset or query changes
   useEffect(() => {
     fetchJobs(offset, query);
-  }, [offset, query]);
-
-  const handleSearch = () => {
-    setOffset(0);
-    setQuery(search);
-  };
+  }, [offset, query, reloadTrigger]);
 
   const handleNext = () => {
     setOffset((prev) => prev + LIMIT);
@@ -88,18 +89,13 @@ export const ItemList: React.FC = () => {
         {t('jobList')}
       </Typography>
 
-      <Stack direction="row" spacing={2} mb={3}>
-        <TextField
-          fullWidth
-          label={t('searchLabel')}
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <Button variant="contained" onClick={handleSearch}>
-          {t('search')}
-        </Button>
-      </Stack>
-
+      {/* Search bar for AWS-like filters */}
+      <SearchBar onSearch={(filters) => {
+        const queryString = filters.map(f => `${f.key}:${f.value}`).join(' ');
+        setOffset(0);
+        setQuery(queryString);
+      }} />
+      
       {loading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
           <CircularProgress />
@@ -115,18 +111,16 @@ export const ItemList: React.FC = () => {
                     '&:hover': {
                       backgroundColor: 'action.hover',
                     },
-                    cursor: "pointer"
+                    cursor: 'pointer',
                   }}
                   onClick={() => handleSelect(job)}
                 >
                   <ListItemText
                     primary={`${job.position} @ ${job.company_name}`}
                     secondary={
-                      <>
-                        <Typography variant="body2" color="text.secondary" component="span">
-                          {job.location} | {job.salary}
-                        </Typography>
-                      </>
+                      <Typography variant="body2" color="text.secondary" component="span">
+                        {job.location} | {job.salary}
+                      </Typography>
                     }
                   />
                 </ListItem>
@@ -145,14 +139,13 @@ export const ItemList: React.FC = () => {
           {t('next')}
         </Button>
       </Stack>
-      <div>
-        <ItemDialog
-          openDialog={openDialog}
-          onClose={() => setOpenDialog(false)}
-          targetJobInfo={selectedJob ?? undefined}
-          onSave={handleSave}
-        />
-      </div>
+
+      <ItemDialog
+        openDialog={openDialog}
+        onClose={() => setOpenDialog(false)}
+        targetJobInfo={selectedJob ?? undefined}
+        onSave={handleSave}
+      />
     </Box>
   );
 };

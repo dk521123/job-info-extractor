@@ -4,7 +4,7 @@
   "jobList": "Job List",
   "next": "Next",
   "prev": "Prev",
-  "searchLabel": "Search (Company Name, Position, Location)",
+  "searchPlaceholder": "ex: company_name:ABC position:engineer location:Tokyo",
   "search": "Search",
   "file": "File",
   "id": "ID",
