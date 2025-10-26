@@ -93,7 +93,6 @@ export const ItemDialog: React.FC<Props> = ({
   };
 
   const systemFields = [
-    { label: t("id"), name: "id" },
     { label: t("fileType"), name: "file_type" },
     { label: t("fileName"), name: "file_name" },
     { label: t("createdAt"), name: "created_at" },
@@ -104,7 +103,7 @@ export const ItemDialog: React.FC<Props> = ({
     <>
       <Dialog open={openDialog} onClose={onClose} fullWidth maxWidth="sm">
         <DialogTitle sx={{ color: errorMessage ? "error.main" : "inherit" }}>
-          {t("editJobInfo")}
+          {t("editJobInfo")} {formData !== null && ` - ${t("id")}: ${formData?.id}`}
         </DialogTitle>
 
         <DialogContent sx={{ mt: 1 }}>
