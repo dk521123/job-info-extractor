@@ -2,13 +2,16 @@ import logging
 from datetime import datetime, timezone 
 from typing import Any, Text
 
-from sqlalchemy import DateTime, create_engine, Column, Integer, Text, or_
+from sqlalchemy import DateTime, and_, create_engine, Column, Integer, Text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import DeclarativeBase
 
 
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
 
 # Define table
 class BaseTableMixin:
@@ -69,23 +72,25 @@ class DbHandler(object):
         self.session.commit()
 
     def get_job_info(
-            self, limit: int,
+            self,
+            limit: int,
             offset: int,
             is_desc: bool = True,
             search: str = None
         ) -> Any:
         query = self.session.query(JobInfo)
-
         order = JobInfo.created_at.desc() if is_desc else JobInfo.created_at.asc()
+        
         if search:
-            search_term = f"%{search.lower()}%"
-            query = query.filter(
-                or_(
-                    JobInfo.company_name.ilike(search_term),
-                    JobInfo.position.ilike(search_term),
-                    JobInfo.location.ilike(search_term),
-                )
-            )
+            # search: string(e.g. "company_name:ABD position:Engineer")
+            search_terms = search.split()
+            filters = []
+            for term in search_terms:
+                key, value = term.split(":")
+                filters.append(getattr(JobInfo, key).ilike(f"%{value}%"))
+            query = query.filter(and_(*filters))
+
+        logger.info(f"*** SQL Query: {query} ***")
         return query.order_by(order).offset(offset).limit(limit).all()
 
     def close(self):

@@ -13,8 +13,8 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { ItemDialog } from './ItemDialog';
-import type { JobInfo } from '../types/JobInfo';
 import { SearchBar } from './SearchBar';
+import type { JobInfo } from '../types/JobInfo';
 
 const LIMIT = 5;
 
@@ -37,17 +37,16 @@ export const ItemList: React.FC<Props> = ({ reloadTrigger, onUploadComplete }) =
   const fetchJobs = async (offsetValue: number, searchQuery: string) => {
     setLoading(true);
     try {
-      const params = new URLSearchParams({
-        limit: LIMIT.toString(),
-        offset: offsetValue.toString(),
-      });
+      const params = new URLSearchParams();
+      params.append('limit', LIMIT.toString());
+      params.append('offset', offsetValue.toString());
       if (searchQuery) {
-        params.append('search', searchQuery);
+          params.append('search', searchQuery);
       }
+      console.log('Fetching jobs with params:', params.toString());
+      const url = `${import.meta.env.VITE_API_BASE_URL}/list/?${params.toString()}`;
+      const response = await fetch(url, { method: 'GET' });
 
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/list?${params.toString()}`
-      );
       if (!response.ok) throw new Error(`Error: ${response.status}`);
       const data = await response.json();
       setJobs(data);

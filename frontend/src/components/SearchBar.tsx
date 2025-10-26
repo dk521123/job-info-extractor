@@ -4,7 +4,10 @@ import { useTranslation } from 'react-i18next';
 
 type Filter = { key: string; value: string };
 
-const KEY_SUGGESTIONS = ['company_name', 'place', 'position'];
+const KEY_SUGGESTIONS = [
+  'company_name', 'place', 'position', 'location', 'salary',
+  'file_name', 'file_type', 'created_at', 'updated_at', 'id'
+];
 
 export const SearchBar: React.FC<{
   onSearch: (filters: Filter[]) => void;
@@ -122,7 +125,7 @@ export const SearchBar: React.FC<{
         {t('search')}
       </Button>
 
-      {/* 🔽 Show key suggestions */}
+      {/* Show key suggestions */}
       {!isEnteringValue && keyInput && (
         <Paper sx={{ position: 'absolute', mt: 5, zIndex: 10, width: 300 }}>
           {KEY_SUGGESTIONS.filter((k) => k.includes(keyInput)).map((k) => (

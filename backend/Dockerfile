@@ -20,4 +20,5 @@ RUN mkdir -p /app/uploads
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-ENTRYPOINT ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# -u: unbuffered output for python logging
+ENTRYPOINT ["python", "-u", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
