@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.4.0](https://github.com/dk521123/job-info-extractor/compare/v0.3.2...v0.4.0) (2025-10-26)
+
+
+### Features
+
+* To implement a search functions by multiple keys ([b72c0e1](https://github.com/dk521123/job-info-extractor/commit/b72c0e1df7e8f7b1553892ed99d85af039322618))
+* Upgrade serch bar ([7ae45df](https://github.com/dk521123/job-info-extractor/commit/7ae45dff8c62048a647ca5181118f72436c1a423))
+
+
+### Bug Fixes
+
+* Add padding for Dialog ([43249ed](https://github.com/dk521123/job-info-extractor/commit/43249ede081ce6cfac682e35e6a2bee351f37b68))
+* Reload after upload a file ([314fe26](https://github.com/dk521123/job-info-extractor/commit/314fe26b2d684dde79f17f17af44503dc37b4d3f))
+
 ## [0.3.2](https://github.com/dk521123/job-info-extractor/compare/v0.3.1...v0.3.2) (2025-10-24)
 
 
