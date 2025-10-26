@@ -4,7 +4,7 @@
   "jobList": "求人一覧",
   "next": "次へ",
   "prev": "前へ",
-  "searchLabel": "検索 (会社名、職種、勤務地)",
+  "searchPlaceholder": "例: company_name:株式会社ABC position:SE location:東京都渋谷区",
   "search": "検索",
   "id": "ID",
   "file": "ファイル",
