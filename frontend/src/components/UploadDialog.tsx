@@ -2,20 +2,25 @@ import React, { useRef, useState } from 'react';
 import {
   Box,
   Button,
-  Typography,
   Input,
   CircularProgress,
   Snackbar,
   Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import type { RegisterResponse } from '../types/RegisterResponse';
 
 type UploadProps = {
+  openDialog: boolean;
+  onClose: () => void;
   onUploadComplete: () => void;
 };
 
-export const Upload: React.FC<UploadProps> = ({ onUploadComplete }) => {
+export const UploadDialog: React.FC<UploadProps> = ({ openDialog, onClose, onUploadComplete }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [loading, setLoading] = useState(false);
   const [snackbar, setSnackbar] = useState<{
@@ -59,13 +64,6 @@ export const Upload: React.FC<UploadProps> = ({ onUploadComplete }) => {
       const result: RegisterResponse = await response.json();
       console.log('Upload result:', result);
 
-      // Set success Snackbar
-      setSnackbar({
-        open: true,
-        message: 'Upload successful!',
-        severity: 'success',
-      });
-
       // Notify parent component
       onUploadComplete();
 
@@ -87,41 +85,43 @@ export const Upload: React.FC<UploadProps> = ({ onUploadComplete }) => {
   };
 
   return (
-    <Box sx={{ maxWidth: 600, margin: 'auto', padding: 4 }}>
-      <Typography variant="h5" gutterBottom>
-        {t('uploadTitle')}
-      </Typography>
+      <Dialog open={openDialog} onClose={onClose} fullWidth maxWidth="sm">
+        <DialogTitle sx={{ fontWeight: 600 }}>
+          {t('uploadTitle')}
+        </DialogTitle>
 
-      <Input type="file" inputRef={fileInputRef} sx={{ mb: 2 }} />
+        <DialogContent sx={{ mt: 1 }}></DialogContent>
+        <DialogActions sx={{ flexDirection: 'column', alignItems: 'stretch', gap: 2, mb: 2 }}>
+          <Input type="file" inputRef={fileInputRef} sx={{ mb: 2 }} />
+          <Box>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={uploadFile}
+              disabled={loading}
+            >
+              {loading ? <CircularProgress size={24} color="inherit" /> : t('upload')}
+            </Button>
+          </Box>
 
-      <Box>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={uploadFile}
-          disabled={loading}
-        >
-          {loading ? <CircularProgress size={24} color="inherit" /> : t('upload')}
-        </Button>
-      </Box>
-
-      {/* Snackbar */}
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={4000}
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity={snackbar.severity}
-          sx={{ width: '100%' }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
-    </Box>
+          {/* Snackbar */}
+          <Snackbar
+            open={snackbar.open}
+            autoHideDuration={4000}
+            onClose={handleSnackbarClose}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          >
+            <Alert
+              onClose={handleSnackbarClose}
+              severity={snackbar.severity}
+              sx={{ width: '100%' }}
+            >
+              {snackbar.message}
+            </Alert>
+          </Snackbar>
+        </DialogActions>
+      </Dialog>
   );
 };
 
-export default Upload;
+export default UploadDialog;
