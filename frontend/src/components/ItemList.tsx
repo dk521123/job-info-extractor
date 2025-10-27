@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { ItemDialog } from './ItemDialog';
-import { SearchBar } from './SearchBar';
+import { SearchBax } from './SearchBax';
 import type { JobInfo } from '../types/JobInfo';
 
 const LIMIT = 5;
@@ -90,7 +90,7 @@ export const ItemList: React.FC<Props> = ({ reloadTrigger, onUploadComplete }) =
       </Typography>
 
       {/* Search bar for AWS-like filters */}
-      <SearchBar onSearch={(filters) => {
+      <SearchBax onSearch={(filters) => {
         const queryString = filters.map(f => `${f.key}:${f.value}`).join(' ');
         setOffset(0);
         setQuery(queryString);
