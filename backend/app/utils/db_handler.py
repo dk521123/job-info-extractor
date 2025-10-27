@@ -70,6 +70,14 @@ class DbHandler(object):
         job_info.salary = updated_job_info.salary
         job_info.updated_at = datetime.now(timezone.utc)
         self.session.commit()
+ 
+    def delete_job_info(self, job_id: int):
+        job_info = self.get_job_info_by_id(job_id)
+        if not job_info:
+            raise Exception(f"Job info with id {job_id} not found")
+
+        self.session.delete(job_info)
+        self.session.commit()
 
     def get_job_info(
             self,

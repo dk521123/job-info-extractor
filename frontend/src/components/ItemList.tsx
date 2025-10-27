@@ -14,7 +14,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { ItemDialog } from './ItemDialog';
 import { SearchBox } from './SearchBox';
-import type { JobInfo } from '../types/JobInfo';
+import type { UpdatedJobInfo } from '../types/JobInfo';
 
 const LIMIT = 5;
 
@@ -24,13 +24,13 @@ type Props = {
 };
 
 export const ItemList: React.FC<Props> = ({ reloadTrigger, onUploadComplete }) => {
-  const [jobs, setJobs] = useState<JobInfo[]>([]);
+  const [jobs, setJobs] = useState<UpdatedJobInfo[]>([]);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(true);
 
   const [query, setQuery] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
-  const [selectedJob, setSelectedJob] = useState<JobInfo | null>(null);
+  const [selectedJob, setSelectedJob] = useState<UpdatedJobInfo | null>(null);
 
   const { t } = useTranslation();
 
@@ -71,15 +71,29 @@ export const ItemList: React.FC<Props> = ({ reloadTrigger, onUploadComplete }) =
     setOffset((prev) => Math.max(prev - LIMIT, 0));
   };
 
-  const handleSelect = (jobInfo: JobInfo) => {
+  const handleSelect = (jobInfo: UpdatedJobInfo) => {
     setSelectedJob(jobInfo);
     setOpenDialog(true);
   };
 
-  const handleSave = (updatedJobInfo: JobInfo) => {
-    setJobs((prev) =>
-      prev.map((jobInfo) => (jobInfo.id === updatedJobInfo.id ? updatedJobInfo : jobInfo))
-    );
+  const handleSave = (updatedJobInfo: UpdatedJobInfo) => {
+    switch (updatedJobInfo.updateType) {
+      case "update":
+        // Update the target job info in the list
+        setJobs((prevJobs) =>
+          prevJobs.map((jobInfo) => (jobInfo.id === updatedJobInfo.id ? updatedJobInfo : jobInfo))
+        );
+        break;
+      case "delete":
+        // Delete the target job info in the list
+        setJobs((prevJobs) =>
+          prevJobs.filter((jobInfo) => jobInfo.id !== updatedJobInfo.id)
+        );
+        break;
+      default:
+        break;
+    }
+      
     setOpenDialog(false);
   };
 

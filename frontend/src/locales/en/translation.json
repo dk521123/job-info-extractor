@@ -24,6 +24,7 @@
   "location": "Location",
   "description": "Description",
   "save": "Save",
+  "delete": "Delete",
   "cancel": "Cancel",
   "saveFailed": "Failed to save job information.",
   "requiredField": "This field is required.",

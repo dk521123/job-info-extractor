@@ -64,6 +64,22 @@ def get_job_info_list(
         limit=limit, offset=offset, is_desc=is_desc, search=search)
     return job_info_list
 
+@app.delete("/delete/{job_id}")
+def delete_job_info(job_id: int):
+    try:
+        # Update the job info in the database
+        db_handler.delete_job_info(job_id)
+        return {
+            "status": "success",
+            "message": "Job info deleted successfully"
+        }
+    except Exception as ex:
+        logger.error(f"Delete job info error: {ex}")
+        return {
+            "status": "failed",
+            "message": str(ex)
+        }
+
 @app.put("/update/{job_id}")
 def update_job_info(job_id: int, updated_job_info: schemas.JobInfo):
     try:

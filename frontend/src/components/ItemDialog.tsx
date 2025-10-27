@@ -13,14 +13,17 @@ import {
   Typography,
   Snackbar,
 } from "@mui/material";
+import SaveIcon from "@mui/icons-material/Save";
+import DeleteIcon from "@mui/icons-material/Delete";
+import CancelIcon from "@mui/icons-material/Cancel";
 import { useTranslation } from "react-i18next";
-import type { JobInfo } from "../types/JobInfo";
+import type { UpdatedJobInfo } from "../types/JobInfo";
 
 type Props = {
   openDialog: boolean;
   onClose: () => void;
-  targetJobInfo?: JobInfo;
-  onSave: (updatedJobInfo: JobInfo) => void;
+  targetJobInfo?: UpdatedJobInfo;
+  onSave: (updatedJobInfo: UpdatedJobInfo) => void;
 };
 
 export const ItemDialog: React.FC<Props> = ({
@@ -30,7 +33,7 @@ export const ItemDialog: React.FC<Props> = ({
   onSave,
 }) => {
   const { t } = useTranslation();
-  const [formData, setFormData] = useState<JobInfo | undefined>(targetJobInfo);
+  const [formData, setFormData] = useState<UpdatedJobInfo | undefined>(targetJobInfo);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
@@ -81,10 +84,42 @@ export const ItemDialog: React.FC<Props> = ({
         throw new Error(text || `HTTP ${response.status}`);
       }
 
+      formData.updateType = "update";
       onSave(formData);
     } catch (err: any) {
       console.error("Failed to save job info:", err);
       const message = t("saveFailed") + ": " + (err.message ?? "Unknown error");
+      setErrorMessage(message);
+      setShowSnackbar(true);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!formData) return;
+
+    setSaving(true);
+    setErrorMessage(null);
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/delete/${formData.id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || `HTTP ${response.status}`);
+      }
+
+      formData.updateType = "delete";
+      onSave(formData);
+    } catch (err: any) {
+      console.error("Failed to delete job info:", err);
+      const message = t("deleteFailed") + ": " + (err.message ?? "Unknown error");
       setErrorMessage(message);
       setShowSnackbar(true);
     } finally {
@@ -125,7 +160,7 @@ export const ItemDialog: React.FC<Props> = ({
                     sx={{ minWidth: 250 }}
                     label={field.label}
                     name={field.name}
-                    value={formData?.[field.name as keyof JobInfo] ?? ""}
+                    value={formData?.[field.name as keyof UpdatedJobInfo] ?? ""}
                     onChange={handleChange}
                     error={!!fieldErrors[field.name]}
                     helperText={fieldErrors[field.name]}
@@ -146,7 +181,7 @@ export const ItemDialog: React.FC<Props> = ({
                   <TextField
                     sx={{ minWidth: 250 }}
                     label={field.label}
-                    value={formData?.[field.name as keyof JobInfo] ?? ""}
+                    value={formData?.[field.name as keyof UpdatedJobInfo] ?? ""}
                     InputProps={{ readOnly: true }}
                     variant="filled"
                   />
@@ -157,16 +192,24 @@ export const ItemDialog: React.FC<Props> = ({
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={onClose} disabled={saving}>
-            {t("cancel")}
-          </Button>
           <Button
             onClick={handleSave}
             variant="contained"
             disabled={saving}
-            startIcon={saving ? <CircularProgress size={18} /> : null}
+            startIcon={saving ? <CircularProgress size={18} /> : <SaveIcon />}
           >
             {t("save")}
+          </Button>
+          <Button
+            onClick={handleDelete}
+            variant="outlined"
+            disabled={saving}
+            startIcon={saving ? <CircularProgress size={18} /> : <DeleteIcon />}
+          >
+            {t("delete")}
+          </Button>
+          <Button onClick={onClose} disabled={saving} startIcon={<CancelIcon />}>
+            {t("cancel")}
           </Button>
         </DialogActions>
       </Dialog>

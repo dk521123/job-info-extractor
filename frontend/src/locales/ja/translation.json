@@ -24,6 +24,7 @@
   "location": "場所",
   "description": "説明",
   "save": "保存",
+  "delete": "削除",
   "cancel": "キャンセル",
   "saveFailed": "求人情報の保存に失敗しました。",
   "requiredField": "このフィールドは必須です。",
