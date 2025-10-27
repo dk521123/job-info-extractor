@@ -75,7 +75,13 @@ export const SearchBar: React.FC<{
   };
 
   const handleSearch = () => {
-    onSearch(filters);
+    let newFilters = [...filters];
+    if (keyInput && valueInput) {
+      // Add any in-progress input
+      newFilters.push({ key: keyInput, value: valueInput });
+    }
+    console.log("Search clicked:", newFilters);
+    onSearch(newFilters);
   };
 
   const removeFilter = (index: number) => {
