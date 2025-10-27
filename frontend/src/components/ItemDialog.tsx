@@ -112,7 +112,7 @@ export const ItemDialog: React.FC<Props> = ({
               {errorMessage}
             </Alert>
           )}
-          <div style={{ padding: 10}}>
+          <div style={{ padding: 10 }}>
             <Grid container spacing={2}>
               {[
                 { label: t("companyName"), name: "company_name" },
@@ -122,7 +122,7 @@ export const ItemDialog: React.FC<Props> = ({
               ].map((field) => (
                 <Grid item xs={12} sm={6} key={field.name}>
                   <TextField
-                    fullWidth
+                    sx={{ minWidth: 250 }}
                     label={field.label}
                     name={field.name}
                     value={formData?.[field.name as keyof JobInfo] ?? ""}
@@ -144,7 +144,7 @@ export const ItemDialog: React.FC<Props> = ({
               {systemFields.map((field) => (
                 <Grid item xs={12} sm={6} key={field.name}>
                   <TextField
-                    fullWidth
+                    sx={{ minWidth: 250 }}
                     label={field.label}
                     value={formData?.[field.name as keyof JobInfo] ?? ""}
                     InputProps={{ readOnly: true }}
