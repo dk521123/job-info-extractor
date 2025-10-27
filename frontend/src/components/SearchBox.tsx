@@ -9,7 +9,7 @@ const KEY_SUGGESTIONS = [
   'file_name', 'file_type', 'created_at', 'updated_at', 'id'
 ];
 
-export const SearchBax: React.FC<{
+export const SearchBox: React.FC<{
   onSearch: (filters: Filter[]) => void;
 }> = ({ onSearch }) => {
   const { t } = useTranslation();
