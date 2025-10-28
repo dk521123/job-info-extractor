@@ -82,17 +82,17 @@ function App() {
   const handleAdd = (newJobInfo: UpdatedJobInfo) => {
     switch (newJobInfo.updateType) {
       case "new":
-          // ToDo: Should replace a better way
-          window.location.reload();
-          break;
-        default:
-          break;
+        // ToDo: Should replace a better way
+        window.location.reload();
+        break;
+      default:
+        break;
       }
       setOpenDialog(false);
       setIsDrawerOpen(false);
     };
 
-  // Function to render the drawer content
+  // Function to render the sidebar
   const drawerContent = (
     <Box
       sx={{ width: drawerWidth }}
@@ -102,8 +102,8 @@ function App() {
     >
       <List>
         {Object.entries({
-          'Upload': <UploadFile />,
-          'Add': <AddCircleOutlineIcon />
+          'Add': <AddCircleOutlineIcon />,
+          'Upload': <UploadFile />
         }).map(([text, icon], _) => (
 
           <ListItem key={text} disablePadding>
@@ -114,11 +114,11 @@ function App() {
                   e.stopPropagation();
                   setSelectedMenu(text);
                   switch (text) {
-                    case 'Upload':
-                      setOpenUploadDialog(true);
-                      break;
                     case 'Add':
                       setOpenDialog(true);
+                      break;
+                    case 'Upload':
+                      setOpenUploadDialog(true);
                       break;
                     default:
                       break;
@@ -192,13 +192,6 @@ function App() {
             <ItemList
               reloadTrigger={reloadTrigger}
               onUploadComplete={() => {
-                // Set success Snackbar
-                setSnackbar({
-                  open: true,
-                  message: 'Upload successful!',
-                  severity: 'success',
-                });
-
                 setOpenUploadDialog(false);
                 setIsDrawerOpen(false);
               }}
