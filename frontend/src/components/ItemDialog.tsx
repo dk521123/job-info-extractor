@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -34,13 +34,6 @@ export const ItemDialog: React.FC<Props> = ({
   targetJobInfo,
   onSave,
 }) => {
-  const { t } = useTranslation();
-  const [formData, setFormData] = useState<UpdatedJobInfo | undefined>(targetJobInfo);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-  const [saving, setSaving] = useState(false);
-  const [showSnackbar, setShowSnackbar] = useState(false);
-
   const EMPTY_JOB_INFO: UpdatedJobInfo = {
     id: undefined,
     company_name: "",
@@ -54,8 +47,41 @@ export const ItemDialog: React.FC<Props> = ({
     updateType: "new",
   };
 
+  const { t } = useTranslation();
+  const [formData, setFormData] = useState<UpdatedJobInfo | undefined>(targetJobInfo);
+  const initialDataRef = useRef<UpdatedJobInfo | undefined>(targetJobInfo ?? EMPTY_JOB_INFO);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [saving, setSaving] = useState(false);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+
+  const isSameJobInfo = (
+    info1: UpdatedJobInfo | undefined,
+    info2: UpdatedJobInfo | undefined
+  ): boolean => {
+    if (!info1 || !info2) return false; 
+
+    const fields: Array<keyof UpdatedJobInfo> = [
+      "company_name",
+      "position",
+      "location",
+      "salary",
+    ];
+
+    for (const field of fields) {
+      if (info1[field] !== info2[field]) {
+        // Found a different value
+        return false;
+      }
+    }
+    return true;
+  };
+
   useEffect(() => {
-    setFormData(targetJobInfo ?? EMPTY_JOB_INFO);
+    const initialJobInfo = targetJobInfo ?? EMPTY_JOB_INFO;
+    setFormData(initialJobInfo);
+    initialDataRef.current = initialJobInfo;
+
     setErrorMessage(null);
     setFieldErrors({});
     setShowSnackbar(false);
@@ -66,6 +92,20 @@ export const ItemDialog: React.FC<Props> = ({
     setFormData((prev) => (prev ? { ...prev, [name]: value } : undefined));
     setFieldErrors((prev) => ({ ...prev, [name]: "" }));
     setErrorMessage(null);
+  };
+
+  const handleClose = (_: {}, reason: "backdropClick" | "escapeKeyDown") => {
+    if (!formData || !initialDataRef.current) {
+        onClose();
+        return;
+    }
+
+    const hasDataChanged = !isSameJobInfo(formData, initialDataRef.current);
+    if (hasDataChanged) {
+      console.log(`Closing blocked by reason: ${reason} (Data is different from initial state)`);
+      return; 
+    }
+    onClose();
   };
 
   const validate = () => {
@@ -185,7 +225,11 @@ export const ItemDialog: React.FC<Props> = ({
 
   return (
     <>
-      <Dialog open={openDialog} onClose={onClose} fullWidth maxWidth="sm">
+      <Dialog
+        open={openDialog}
+        onClose={handleClose}
+        fullWidth maxWidth="sm"
+      >
         <DialogTitle sx={{ color: errorMessage ? "error.main" : "inherit" }}>
           {isForNew ? (t("addJobInfo")) : (t("editJobInfo"))} {formData !== null && !isForNew && ` - ${t("id")}: ${formData?.id}`}
         </DialogTitle>
