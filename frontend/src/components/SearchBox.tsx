@@ -9,7 +9,7 @@ const KEY_SUGGESTIONS = [
   'file_name', 'file_type', 'created_at', 'updated_at', 'id'
 ];
 
-export const SearchBar: React.FC<{
+export const SearchBox: React.FC<{
   onSearch: (filters: Filter[]) => void;
 }> = ({ onSearch }) => {
   const { t } = useTranslation();
@@ -75,7 +75,13 @@ export const SearchBar: React.FC<{
   };
 
   const handleSearch = () => {
-    onSearch(filters);
+    let newFilters = [...filters];
+    if (keyInput && valueInput) {
+      // Add any in-progress input
+      newFilters.push({ key: keyInput, value: valueInput });
+    }
+    console.log("Search clicked:", newFilters);
+    onSearch(newFilters);
   };
 
   const removeFilter = (index: number) => {

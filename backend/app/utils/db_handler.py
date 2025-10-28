@@ -1,38 +1,18 @@
 import logging
 from datetime import datetime, timezone 
-from typing import Any, Text
+from typing import Any
 
-from sqlalchemy import DateTime, and_, create_engine, Column, Integer, Text
+from sqlalchemy import and_, create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import DeclarativeBase
 
+from app.models import JobInfo, Base
 
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
-
-# Define table
-class BaseTableMixin:
-    id = Column(Integer, primary_key=True, index=True)
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc),
-                        onupdate=lambda: datetime.now(timezone.utc))
-
-class Base(DeclarativeBase):
-    pass
-
-class JobInfo(Base, BaseTableMixin):
-    __tablename__ = "job_info"
-
-    file_name = Column(Text)
-    file_type = Column(Text)
-    company_name = Column(Text)
-    position = Column(Text)
-    location = Column(Text)
-    salary = Column(Text)
-
+ 
 class DbHandler(object):
     def __init__(self, user: str, password: str, host: str, db_port: str, db_name: str, ):
         self.url = f"postgresql://{user}:{password}@{host}:{db_port}/{db_name}"
@@ -54,8 +34,18 @@ class DbHandler(object):
             return False
 
     def add_job_info(self, job_info: JobInfo):
-        self.session.add(job_info)
-        self.session.commit()
+        try:
+            job_info.created_at = datetime.now(timezone.utc)
+            job_info.updated_at = datetime.now(timezone.utc)
+
+            self.session.add(job_info)
+            self.session.commit()
+            self.session.refresh(job_info)
+            return job_info
+        except Exception as e:
+            logging.error(f"Add job info error: {e}")
+            self.session.rollback()
+            raise Exception("Failed to save job information.")
 
     def update_job_info(self, job_id: int, updated_job_info: JobInfo):
         job_info = self.get_job_info_by_id(job_id)
@@ -69,6 +59,14 @@ class DbHandler(object):
         job_info.location = updated_job_info.location
         job_info.salary = updated_job_info.salary
         job_info.updated_at = datetime.now(timezone.utc)
+        self.session.commit()
+ 
+    def delete_job_info(self, job_id: int):
+        job_info = self.get_job_info_by_id(job_id)
+        if not job_info:
+            raise Exception(f"Job info with id {job_id} not found")
+
+        self.session.delete(job_info)
         self.session.commit()
 
     def get_job_info(
