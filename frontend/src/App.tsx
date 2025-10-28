@@ -82,12 +82,14 @@ function App() {
   const handleAdd = (newJobInfo: UpdatedJobInfo) => {
     switch (newJobInfo.updateType) {
       case "new":
-          // ToDo
+          // ToDo: Should replace a better way
+          window.location.reload();
           break;
         default:
           break;
       }
       setOpenDialog(false);
+      setIsDrawerOpen(false);
     };
 
   // Function to render the drawer content
