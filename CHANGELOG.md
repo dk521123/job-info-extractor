@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.5.0](https://github.com/dk521123/job-info-extractor/compare/v0.4.0...v0.5.0) (2025-10-28)
+
+
+### Features
+
+* Add sidebar and organize UI ([2bbea93](https://github.com/dk521123/job-info-extractor/commit/2bbea93f6b1e1c2d9937d85fe0827b3e41dc3f30))
+* Implement add a new job info ([2143ae2](https://github.com/dk521123/job-info-extractor/commit/2143ae2befd639cf47ad3e21508094c02218fa83))
+* Implement deleting job info ([6b5ae50](https://github.com/dk521123/job-info-extractor/commit/6b5ae50c922892799fe4f7c17969c4d26f5f0536))
+
+
+### Bug Fixes
+
+* To be able to search in progress input mode ([989c858](https://github.com/dk521123/job-info-extractor/commit/989c858bc8aebed8bd0c6d916677247ba0d629c7))
+
 ## [0.4.0](https://github.com/dk521123/job-info-extractor/compare/v0.3.2...v0.4.0) (2025-10-26)
 
 
