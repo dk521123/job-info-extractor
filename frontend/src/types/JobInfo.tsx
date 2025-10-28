@@ -1,7 +1,7 @@
 export type UpdatedJobInfo = {
-  id: number;
-  file_name: string;
-  file_type: string;
+  id?: number;
+  file_name?: string;
+  file_type?: string;
   company_name: string;
   position: string;
   location: string;

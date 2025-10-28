@@ -18,6 +18,7 @@
   "uploadTitle": "画像またはPDFをアップロード",
   "result": "結果",
   "errorToUpload": "ファイルを選択してください。",
+  "addJobInfo": "求人情報を追加",
   "editJobInfo": "求人情報を編集",
   "companyName": "会社名",
   "position": "ポジション",

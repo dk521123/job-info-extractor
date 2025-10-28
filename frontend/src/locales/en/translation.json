@@ -18,6 +18,7 @@
   "uploadTitle": "Upload Image or PDF",
   "result": "Result",
   "errorToUpload": "Please select a file first.",
+  "addJobInfo": "Add Job Information",
   "editJobInfo": "Edit Job Information",
   "companyName": "Company Name",
   "position": "Position",

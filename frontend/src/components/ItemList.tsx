@@ -155,6 +155,7 @@ export const ItemList: React.FC<Props> = ({ reloadTrigger, onUploadComplete }) =
       </Stack>
 
       <ItemDialog
+        isForNew={false}
         openDialog={openDialog}
         onClose={() => setOpenDialog(false)}
         targetJobInfo={selectedJob ?? undefined}

@@ -8,8 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.utils.job_parse import JobParser
 from app.utils.extractor import ImageExtractor, PDFExtractor
 from app.utils.db_handler import DbHandler
-from app.utils.db_handler import JobInfo
-from . import schemas
+from app import schemas, models
 
 UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -80,6 +79,24 @@ def delete_job_info(job_id: int):
             "message": str(ex)
         }
 
+@app.put("/add/")
+def add_job_info(new_job_info: schemas.JobInfoToAdd):
+    try:
+        # Convert JobInfo from Pydantic to SQLAlchemy
+        db_job = models.JobInfo(**new_job_info.dict(exclude_unset=True))
+        # Add the job info in the database
+        db_handler.add_job_info(db_job)
+        return {
+            "status": "success",
+            "message": "Job info added successfully"
+        }
+    except Exception as ex:
+        logger.error(f"Add job info error: {ex}")
+        return {
+            "status": "failed",
+            "message": str(ex)
+        }
+
 @app.put("/update/{job_id}")
 def update_job_info(job_id: int, updated_job_info: schemas.JobInfo):
     try:
@@ -126,7 +143,7 @@ async def upload_file(upload_file: UploadFile = File(...)):
         }
     else:
         job_info = JobParser(text_list).parse()
-        job_record = JobInfo(
+        job_record = models.JobInfo(
             file_name=upload_file.filename,
             file_type=file_type,
             company_name=job_info.get("company"),

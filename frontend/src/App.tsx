@@ -24,8 +24,10 @@ import LanguageIcon from '@mui/icons-material/Language';
 import UploadFile from '@mui/icons-material/UploadFile';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import UploadDialog from './components/UploadDialog';
+import ItemDialog from './components/ItemDialog';
 import ItemList from './components/ItemList';
 import { useTranslation } from 'react-i18next';
+import type { UpdatedJobInfo } from './types/JobInfo';
 
 // Width of the drawer in sidebar
 const drawerWidth = 240;
@@ -40,6 +42,8 @@ function App() {
   const [selectedMenu, setSelectedMenu] = useState('Inbox');
 
   const [openUploadDialog, setOpenUploadDialog] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+
   const [snackbar, setSnackbar] = useState<{
     open: boolean;
     message: string;
@@ -75,6 +79,17 @@ function App() {
     setIsDrawerOpen(open);
   };
 
+  const handleAdd = (newJobInfo: UpdatedJobInfo) => {
+    switch (newJobInfo.updateType) {
+      case "new":
+          // ToDo
+          break;
+        default:
+          break;
+      }
+      setOpenDialog(false);
+    };
+
   // Function to render the drawer content
   const drawerContent = (
     <Box
@@ -86,7 +101,7 @@ function App() {
       <List>
         {Object.entries({
           'Upload': <UploadFile />,
-          'Add new': <AddCircleOutlineIcon />
+          'Add': <AddCircleOutlineIcon />
         }).map(([text, icon], _) => (
 
           <ListItem key={text} disablePadding>
@@ -100,8 +115,8 @@ function App() {
                     case 'Upload':
                       setOpenUploadDialog(true);
                       break;
-                    case 'Add new':
-                      // Implement "Add new" functionality here
+                    case 'Add':
+                      setOpenDialog(true);
                       break;
                     default:
                       break;
@@ -189,12 +204,22 @@ function App() {
           </Box>
         </Container>
 
+        {/* "Upload" */}
         <UploadDialog
           openDialog={openUploadDialog}
           onClose={() => setOpenUploadDialog(false)}
           onUploadComplete={handleUploadSuccess}
         />
-          {/* Snackbar */}
+        {/* "Add new" */}
+        <ItemDialog
+          isForNew={true}
+          openDialog={openDialog}
+          onClose={() => setOpenDialog(false)}
+          targetJobInfo={undefined}
+          onSave={handleAdd}
+        />
+
+        {/* Snackbar */}
         <Snackbar
           open={snackbar.open}
           autoHideDuration={4000}
