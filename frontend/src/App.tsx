@@ -78,6 +78,11 @@ function App() {
     }
   };
 
+  const handleCloseSettingsDialog = () => {
+    setOpenSettingsDialog(false);
+    setIsDrawerOpen(false);
+  }
+
   // Handler to toggle the drawer open/close state
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     // Consider tab and shift key operations
@@ -235,7 +240,7 @@ function App() {
         {/* "Settings" */}
         <SettingsDialog
           openSettingsDialog={openSettingsDialog}
-          onCloseSettingDialog={() => setOpenSettingsDialog(false)}
+          onCloseSettingDialog={() => handleCloseSettingsDialog() }
         />
 
         {/* Snackbar */}
