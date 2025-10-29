@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   CssBaseline,
   AppBar,
@@ -19,15 +19,22 @@ import {
   Snackbar,
   Alert,
 } from '@mui/material';
+
 import MenuIcon from '@mui/icons-material/Menu';
 import LanguageIcon from '@mui/icons-material/Language';
-import UploadFile from '@mui/icons-material/UploadFile';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import UploadFile from '@mui/icons-material/UploadFile';
+import SettingsApplicationsOutlined from '@mui/icons-material/SettingsApplicationsOutlined';
+
 import UploadDialog from './components/UploadDialog';
 import ItemDialog from './components/ItemDialog';
+import SettingsDialog from './components/SettingsDialog';
 import ItemList from './components/ItemList';
+
 import { useTranslation } from 'react-i18next';
 import type { UpdatedJobInfo } from './types/JobInfo';
+import { SettingsManager } from './utils/SettingsManager';
+import type { AppLanguage } from './utils/SettingsManager';
 
 // Width of the drawer in sidebar
 const drawerWidth = 240;
@@ -35,7 +42,7 @@ const drawerWidth = 240;
 function App() {
   const { t, i18n } = useTranslation();
   const [reloadTrigger, setReloadTrigger] = useState(0);
-  const [lang, setLang] = useState<'en' | 'ja'>(i18n.language === 'ja' ? 'ja' : 'en');
+  const [lang, setLang] = useState<AppLanguage>(SettingsManager.getLang());
   
   // For sidebar drawer state
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); 
@@ -44,27 +51,46 @@ function App() {
   const [openUploadDialog, setOpenUploadDialog] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
 
+  const [openSettingsDialog, setOpenSettingsDialog] = useState(false);
+
   const [snackbar, setSnackbar] = useState<{
     open: boolean;
     message: string;
     severity: 'success' | 'error' | 'info';
   }>({ open: false, message: '', severity: 'info' });
+
+  useEffect(() => {
+    // Initialize for lang
+    const lang = SettingsManager.getLang();
+    i18n.changeLanguage(lang);
+  }, []);
+
   const handleSnackbarClose = () => {
     setSnackbar((prev) => ({ ...prev, open: false }));
   };
+
   const handleUploadSuccess = () => {
     setReloadTrigger((prev) => prev + 1);
+    setOpenUploadDialog(false);
+    setIsDrawerOpen(false);
+
+    // ToDo: Should replace a better way
+    window.location.reload();
   };
 
   const handleChangeLanguage = (
     _: React.MouseEvent<HTMLElement>,
-    newLang: 'en' | 'ja' | null
+    newLang: AppLanguage
   ) => {
-    if (newLang !== null) {
-      setLang(newLang);
-      i18n.changeLanguage(newLang);
-    }
+    setLang(newLang);
+    i18n.changeLanguage(newLang);
+    SettingsManager.setLang(newLang);
   };
+
+  const handleCloseSettingsDialog = () => {
+    setOpenSettingsDialog(false);
+    setIsDrawerOpen(false);
+  }
 
   // Handler to toggle the drawer open/close state
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -82,15 +108,17 @@ function App() {
   const handleAdd = (newJobInfo: UpdatedJobInfo) => {
     switch (newJobInfo.updateType) {
       case "new":
-          // ToDo
-          break;
-        default:
-          break;
+        // ToDo: Should replace a better way
+        window.location.reload();
+        break;
+      default:
+        break;
       }
       setOpenDialog(false);
+      setIsDrawerOpen(false);
     };
 
-  // Function to render the drawer content
+  // Function to render the sidebar
   const drawerContent = (
     <Box
       sx={{ width: drawerWidth }}
@@ -100,25 +128,31 @@ function App() {
     >
       <List>
         {Object.entries({
-          'Upload': <UploadFile />,
-          'Add': <AddCircleOutlineIcon />
-        }).map(([text, icon], _) => (
-
-          <ListItem key={text} disablePadding>
+          'menu': [<MenuIcon />, t('menuOnSidebar')],
+          'add': [<AddCircleOutlineIcon />, t('addOnSidebar')],
+          'upload': [<UploadFile />, t('uploadOnSidebar')],
+          'settings': [<SettingsApplicationsOutlined />, t('settingsOnSidebar')]
+        }).map(([menuKey, [icon, text]], _) => (
+          <ListItem key={menuKey} disablePadding>
             <ListItemButton
-              selected={selectedMenu === text}
+              selected={selectedMenu === menuKey}
               onClick={(e) => {
                   // Stop event propagation to prevent drawer from closing
                   e.stopPropagation();
-                  setSelectedMenu(text);
-                  switch (text) {
-                    case 'Upload':
-                      setOpenUploadDialog(true);
-                      break;
-                    case 'Add':
+                  setSelectedMenu(menuKey);
+                  switch (menuKey) {
+                    case 'add':
                       setOpenDialog(true);
                       break;
+                    case 'upload':
+                      setOpenUploadDialog(true);
+                      break;
+                    case 'settings':
+                      setOpenSettingsDialog(true);
+                      break;
+                    case 'menu':
                     default:
+                      setIsDrawerOpen(false);
                       break;
                   }
               }}
@@ -190,14 +224,6 @@ function App() {
             <ItemList
               reloadTrigger={reloadTrigger}
               onUploadComplete={() => {
-                // Set success Snackbar
-                setSnackbar({
-                  open: true,
-                  message: 'Upload successful!',
-                  severity: 'success',
-                });
-
-                setOpenUploadDialog(false);
                 setIsDrawerOpen(false);
               }}
             />
@@ -210,13 +236,20 @@ function App() {
           onClose={() => setOpenUploadDialog(false)}
           onUploadComplete={handleUploadSuccess}
         />
-        {/* "Add new" */}
+
+        {/* "Add" */}
         <ItemDialog
           isForNew={true}
           openDialog={openDialog}
           onClose={() => setOpenDialog(false)}
           targetJobInfo={undefined}
           onSave={handleAdd}
+        />
+
+        {/* "Settings" */}
+        <SettingsDialog
+          openSettingsDialog={openSettingsDialog}
+          onCloseSettingDialog={() => handleCloseSettingsDialog() }
         />
 
         {/* Snackbar */}
@@ -234,6 +267,7 @@ function App() {
             {snackbar.message}
           </Alert>
         </Snackbar>
+
         {/* ===== Footer ===== */}
         <Box
           component="footer"

@@ -50,7 +50,7 @@ def init_db():
 app = init_app()
 db_handler = init_db()
 
-@app.get("/list/", response_model=List[schemas.JobInfo])
+@app.get("/list/", response_model=schemas.JobInfoList)
 def get_job_info_list(
     limit: int = Query(10, ge=1),
     offset: int = Query(0, ge=0),
@@ -59,9 +59,13 @@ def get_job_info_list(
 ):
     # search: None or string(e.g. "company_name:ABD position:Engineer")
     logger.info(f"Get job info list with limit={limit}, offset={offset}, is_desc={is_desc}, search={search}")
-    job_info_list = db_handler.get_job_info(
+    total_count, job_info_list = db_handler.get_job_info(
         limit=limit, offset=offset, is_desc=is_desc, search=search)
-    return job_info_list
+
+    return schemas.JobInfoList(
+        total_count=total_count,
+        job_info_list=[schemas.JobInfo.from_orm(job) for job in job_info_list],
+    )
 
 @app.delete("/delete/{job_id}")
 def delete_job_info(job_id: int):

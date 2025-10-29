@@ -15,8 +15,9 @@ import { useTranslation } from 'react-i18next';
 import { ItemDialog } from './ItemDialog';
 import { SearchBox } from './SearchBox';
 import type { UpdatedJobInfo } from '../types/JobInfo';
+import { SettingsManager } from '../utils/SettingsManager';
 
-const LIMIT = 5;
+const rowLimit = SettingsManager.getRowLimit();
 
 type Props = {
   reloadTrigger?: number;
@@ -26,6 +27,7 @@ type Props = {
 export const ItemList: React.FC<Props> = ({ reloadTrigger, onUploadComplete }) => {
   const [jobs, setJobs] = useState<UpdatedJobInfo[]>([]);
   const [offset, setOffset] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
   const [query, setQuery] = useState('');
@@ -38,7 +40,7 @@ export const ItemList: React.FC<Props> = ({ reloadTrigger, onUploadComplete }) =
     setLoading(true);
     try {
       const params = new URLSearchParams();
-      params.append('limit', LIMIT.toString());
+      params.append('limit', rowLimit.toString());
       params.append('offset', offsetValue.toString());
       if (searchQuery) {
           params.append('search', searchQuery);
@@ -48,9 +50,10 @@ export const ItemList: React.FC<Props> = ({ reloadTrigger, onUploadComplete }) =
       const response = await fetch(url, { method: 'GET' });
 
       if (!response.ok) throw new Error(`Error: ${response.status}`);
-      const data = await response.json();
-      setJobs(data);
-      onUploadComplete();
+
+      const job_info_list = await response.json();
+      setJobs(job_info_list.job_info_list);
+      setTotalCount(job_info_list.total_count);
     } catch (err) {
       console.error('Failed to fetch jobs:', err);
     } finally {
@@ -64,11 +67,11 @@ export const ItemList: React.FC<Props> = ({ reloadTrigger, onUploadComplete }) =
   }, [offset, query, reloadTrigger]);
 
   const handleNext = () => {
-    setOffset((prev) => prev + LIMIT);
+    setOffset((prev) => prev + rowLimit);
   };
 
   const handlePrevious = () => {
-    setOffset((prev) => Math.max(prev - LIMIT, 0));
+    setOffset((prev) => Math.max(prev - rowLimit, 0));
   };
 
   const handleSelect = (jobInfo: UpdatedJobInfo) => {
@@ -149,9 +152,10 @@ export const ItemList: React.FC<Props> = ({ reloadTrigger, onUploadComplete }) =
         <Button variant="outlined" onClick={handlePrevious} disabled={offset === 0}>
           {t('prev')}
         </Button>
-        <Button variant="outlined" onClick={handleNext} disabled={jobs.length < LIMIT}>
+        <Button variant="outlined" onClick={handleNext} disabled={offset + rowLimit >= totalCount}>
           {t('next')}
         </Button>
+        <Box>({t('totalCount')}: {totalCount})</Box>
       </Stack>
 
       <ItemDialog

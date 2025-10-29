@@ -50,7 +50,6 @@ export const UploadDialog: React.FC<UploadProps> = ({ openDialog, onClose, onUpl
     formData.append('upload_file', file);
 
     setLoading(true);
-
     try {
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/upload/`, {
         method: 'POST',
