@@ -12,7 +12,7 @@ import {
   Stack,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { ItemDialog } from './ItemDialog';
+import { ItemDialog } from './dialogs/ItemDialog';
 import { SearchBox } from './SearchBox';
 import type { UpdatedJobInfo } from '../types/JobInfo';
 import { SettingsManager } from '../utils/SettingsManager';

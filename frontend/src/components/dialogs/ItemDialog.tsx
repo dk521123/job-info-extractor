@@ -17,7 +17,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useTranslation } from "react-i18next";
-import type { UpdatedJobInfo } from "../types/JobInfo";
+import type { UpdatedJobInfo } from "../../types/JobInfo";
 
 type Props = {
   isForNew: boolean;

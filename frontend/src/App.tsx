@@ -26,9 +26,9 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import UploadFile from '@mui/icons-material/UploadFile';
 import SettingsApplicationsOutlined from '@mui/icons-material/SettingsApplicationsOutlined';
 
-import UploadDialog from './components/UploadDialog';
-import ItemDialog from './components/ItemDialog';
-import SettingsDialog from './components/SettingsDialog';
+import UploadDialog from './components/dialogs/UploadDialog';
+import ItemDialog from './components/dialogs/ItemDialog';
+import SettingsDialog from './components/dialogs/SettingsDialog';
 import ItemList from './components/ItemList';
 
 import { useTranslation } from 'react-i18next';

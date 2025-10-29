@@ -12,7 +12,7 @@ import {
   DialogActions,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import type { RegisterResponse } from '../types/RegisterResponse';
+import type { RegisterResponse } from '../../types/RegisterResponse';
 
 type UploadProps = {
   openDialog: boolean;
