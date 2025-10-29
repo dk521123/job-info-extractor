@@ -10,7 +10,7 @@ import {
   FormControlLabel,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { SettingsManager } from '../SettingsManager';
+import { SettingsManager } from '../utils/SettingsManager';
 
 const style = {
   position: 'absolute',

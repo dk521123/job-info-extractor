@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { ItemDialog } from './ItemDialog';
 import { SearchBox } from './SearchBox';
 import type { UpdatedJobInfo } from '../types/JobInfo';
-import { SettingsManager } from '../SettingsManager';
+import { SettingsManager } from '../utils/SettingsManager';
 
 const rowLimit = SettingsManager.getRowLimit();
 
