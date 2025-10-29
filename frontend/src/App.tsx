@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   CssBaseline,
   AppBar,
@@ -33,6 +33,8 @@ import ItemList from './components/ItemList';
 
 import { useTranslation } from 'react-i18next';
 import type { UpdatedJobInfo } from './types/JobInfo';
+import { SettingsManager } from './utils/SettingsManager';
+import type { AppLanguage } from './utils/SettingsManager';
 
 // Width of the drawer in sidebar
 const drawerWidth = 240;
@@ -40,7 +42,7 @@ const drawerWidth = 240;
 function App() {
   const { t, i18n } = useTranslation();
   const [reloadTrigger, setReloadTrigger] = useState(0);
-  const [lang, setLang] = useState<'en' | 'ja'>(i18n.language === 'ja' ? 'ja' : 'en');
+  const [lang, setLang] = useState<AppLanguage>(SettingsManager.getLang());
   
   // For sidebar drawer state
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); 
@@ -56,9 +58,17 @@ function App() {
     message: string;
     severity: 'success' | 'error' | 'info';
   }>({ open: false, message: '', severity: 'info' });
+
+  useEffect(() => {
+    // Initialize for lang
+    const lang = SettingsManager.getLang();
+    i18n.changeLanguage(lang);
+  }, []);
+
   const handleSnackbarClose = () => {
     setSnackbar((prev) => ({ ...prev, open: false }));
   };
+
   const handleUploadSuccess = () => {
     setReloadTrigger((prev) => prev + 1);
     setOpenUploadDialog(false);
@@ -70,12 +80,11 @@ function App() {
 
   const handleChangeLanguage = (
     _: React.MouseEvent<HTMLElement>,
-    newLang: 'en' | 'ja' | null
+    newLang: AppLanguage
   ) => {
-    if (newLang !== null) {
-      setLang(newLang);
-      i18n.changeLanguage(newLang);
-    }
+    setLang(newLang);
+    i18n.changeLanguage(newLang);
+    SettingsManager.setLang(newLang);
   };
 
   const handleCloseSettingsDialog = () => {
