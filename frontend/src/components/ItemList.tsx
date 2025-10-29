@@ -154,6 +154,7 @@ export const ItemList: React.FC<Props> = ({ reloadTrigger, onUploadComplete }) =
         <Button variant="outlined" onClick={handleNext} disabled={offset + LIMIT >= totalCount}>
           {t('next')}
         </Button>
+        <Box>({t('totalCount')}: {totalCount})</Box>
       </Stack>
 
       <ItemDialog

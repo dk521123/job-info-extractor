@@ -54,6 +54,11 @@ function App() {
   };
   const handleUploadSuccess = () => {
     setReloadTrigger((prev) => prev + 1);
+    setOpenUploadDialog(false);
+    setIsDrawerOpen(false);
+
+    // ToDo: Should replace a better way
+    window.location.reload();
   };
 
   const handleChangeLanguage = (
@@ -192,7 +197,6 @@ function App() {
             <ItemList
               reloadTrigger={reloadTrigger}
               onUploadComplete={() => {
-                setOpenUploadDialog(false);
                 setIsDrawerOpen(false);
               }}
             />
