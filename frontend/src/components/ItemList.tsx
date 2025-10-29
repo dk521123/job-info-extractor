@@ -15,10 +15,9 @@ import { useTranslation } from 'react-i18next';
 import { ItemDialog } from './ItemDialog';
 import { SearchBox } from './SearchBox';
 import type { UpdatedJobInfo } from '../types/JobInfo';
+import { SettingsManager } from '../SettingsManager';
 
-const DEFAULT_ROW_LIMIT = '20';
-const STORAGE_KEY_FOR_ROW_LIMIT = 'settings_rowLimit';
-const rowLimit = localStorage.getItem(STORAGE_KEY_FOR_ROW_LIMIT) || DEFAULT_ROW_LIMIT;
+const rowLimit = SettingsManager.getRowLimit();
 
 type Props = {
   reloadTrigger?: number;
@@ -41,7 +40,7 @@ export const ItemList: React.FC<Props> = ({ reloadTrigger, onUploadComplete }) =
     setLoading(true);
     try {
       const params = new URLSearchParams();
-      params.append('limit', rowLimit);
+      params.append('limit', rowLimit.toString());
       params.append('offset', offsetValue.toString());
       if (searchQuery) {
           params.append('search', searchQuery);
@@ -68,11 +67,11 @@ export const ItemList: React.FC<Props> = ({ reloadTrigger, onUploadComplete }) =
   }, [offset, query, reloadTrigger]);
 
   const handleNext = () => {
-    setOffset((prev) => prev + Number(rowLimit));
+    setOffset((prev) => prev + rowLimit);
   };
 
   const handlePrevious = () => {
-    setOffset((prev) => Math.max(prev - Number(rowLimit), 0));
+    setOffset((prev) => Math.max(prev - rowLimit, 0));
   };
 
   const handleSelect = (jobInfo: UpdatedJobInfo) => {
@@ -153,7 +152,7 @@ export const ItemList: React.FC<Props> = ({ reloadTrigger, onUploadComplete }) =
         <Button variant="outlined" onClick={handlePrevious} disabled={offset === 0}>
           {t('prev')}
         </Button>
-        <Button variant="outlined" onClick={handleNext} disabled={offset + Number(rowLimit) >= totalCount}>
+        <Button variant="outlined" onClick={handleNext} disabled={offset + rowLimit >= totalCount}>
           {t('next')}
         </Button>
         <Box>({t('totalCount')}: {totalCount})</Box>

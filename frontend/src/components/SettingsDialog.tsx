@@ -10,9 +10,7 @@ import {
   FormControlLabel,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-
-const STORAGE_KEY_FOR_ROW_LIMIT = 'settings_rowLimit';
-const DEFAULT_ROW_LIMIT = '20';
+import { SettingsManager } from '../SettingsManager';
 
 const style = {
   position: 'absolute',
@@ -38,19 +36,14 @@ export const SettingsDialog: React.FC<SettingsDialogProps> = ({
   const { t } = useTranslation();
 
   // For settings
-  const [rowLimit, setRowLimit] = useState<string>(DEFAULT_ROW_LIMIT);
+  const [rowLimit, setRowLimit] = useState<string>(
+    SettingsManager.getRowLimit().toString()
+  );
 
   // To load settings
   useEffect(() => {
     if (openSettingsDialog) {
-      const rowLimit = localStorage.getItem(STORAGE_KEY_FOR_ROW_LIMIT);
-      if (rowLimit) {
-        setRowLimit(rowLimit);
-      } else {
-        setRowLimit(DEFAULT_ROW_LIMIT);
-      }
-      
-      console.log(`[LocalStorage] Reading: ${rowLimit || DEFAULT_ROW_LIMIT}`);
+      setRowLimit(SettingsManager.getRowLimit().toString());
     }
   }, [openSettingsDialog]);
 
@@ -58,12 +51,7 @@ export const SettingsDialog: React.FC<SettingsDialogProps> = ({
   const handleRowLimitChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     setRowLimit(newValue);    
-    try {
-      localStorage.setItem(STORAGE_KEY_FOR_ROW_LIMIT, newValue);
-      console.log(`[LocalStorage] Save: ${newValue}`);
-    } catch (e) {
-      console.error('Fail to save LocalStorage', e);
-    }
+    SettingsManager.setRowLimit(Number(newValue));
   }, []);
 
   return (
