@@ -26,6 +26,7 @@ type Props = {
 export const ItemList: React.FC<Props> = ({ reloadTrigger, onUploadComplete }) => {
   const [jobs, setJobs] = useState<UpdatedJobInfo[]>([]);
   const [offset, setOffset] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
   const [query, setQuery] = useState('');
@@ -48,9 +49,10 @@ export const ItemList: React.FC<Props> = ({ reloadTrigger, onUploadComplete }) =
       const response = await fetch(url, { method: 'GET' });
 
       if (!response.ok) throw new Error(`Error: ${response.status}`);
-      const data = await response.json();
-      setJobs(data);
-      onUploadComplete();
+
+      const job_info_list = await response.json();
+      setJobs(job_info_list.job_info_list);
+      setTotalCount(job_info_list.total_count);
     } catch (err) {
       console.error('Failed to fetch jobs:', err);
     } finally {
@@ -149,7 +151,7 @@ export const ItemList: React.FC<Props> = ({ reloadTrigger, onUploadComplete }) =
         <Button variant="outlined" onClick={handlePrevious} disabled={offset === 0}>
           {t('prev')}
         </Button>
-        <Button variant="outlined" onClick={handleNext} disabled={jobs.length < LIMIT}>
+        <Button variant="outlined" onClick={handleNext} disabled={offset + LIMIT >= totalCount}>
           {t('next')}
         </Button>
       </Stack>

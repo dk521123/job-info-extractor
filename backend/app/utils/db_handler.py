@@ -78,7 +78,7 @@ class DbHandler(object):
         ) -> Any:
         query = self.session.query(JobInfo)
         order = JobInfo.created_at.desc() if is_desc else JobInfo.created_at.asc()
-        
+
         if search:
             # search: string(e.g. "company_name:ABD position:Engineer")
             search_terms = search.split()
@@ -87,9 +87,11 @@ class DbHandler(object):
                 key, value = term.split(":")
                 filters.append(getattr(JobInfo, key).ilike(f"%{value}%"))
             query = query.filter(and_(*filters))
-
+        
         logger.info(f"*** SQL Query: {query} ***")
-        return query.order_by(order).offset(offset).limit(limit).all()
+        total_count = query.count()
+        jobs = query.order_by(order).offset(offset).limit(limit).all()
+        return total_count, jobs
 
     def close(self):
         self.session.close()

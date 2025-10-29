@@ -1,7 +1,7 @@
 # For Pydantic - Web interface
 
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 
 class JobInfo(BaseModel):
@@ -16,7 +16,7 @@ class JobInfo(BaseModel):
     updated_at: Optional[datetime]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class JobInfoToAdd(BaseModel):
     company_name: str
@@ -25,3 +25,7 @@ class JobInfoToAdd(BaseModel):
     salary: str
     file_type: Optional[str] = None
     file_name: Optional[str] = None
+
+class JobInfoList(BaseModel):
+    total_count: int
+    job_info_list: List[JobInfo]
