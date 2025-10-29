@@ -1,10 +1,10 @@
 export class SettingsManager {
-    private static readonly STORAGE_KEY = 'settings_rowLimit';
+    private static readonly KEY_FOR_ROW_LIMIT = 'settings_rowLimit';
     public static readonly DEFAULT_ROW_LIMIT: number = 20;
 
     public static getRowLimit(): number {
         try {
-            const storedValue = localStorage.getItem(SettingsManager.STORAGE_KEY);            
+            const storedValue = localStorage.getItem(SettingsManager.KEY_FOR_ROW_LIMIT);            
             const numericValue = Number(storedValue || SettingsManager.DEFAULT_ROW_LIMIT.toString());
             if (isNaN(numericValue) || numericValue <= 0) {
                 return SettingsManager.DEFAULT_ROW_LIMIT;
@@ -18,7 +18,7 @@ export class SettingsManager {
 
     public static setRowLimit(value: number): void {
         try {
-            localStorage.setItem(SettingsManager.STORAGE_KEY, value.toString());
+            localStorage.setItem(SettingsManager.KEY_FOR_ROW_LIMIT, value.toString());
         } catch (e) {
             console.error('Failed to save LocalStorage', e);
         }
