@@ -107,6 +107,7 @@ function App() {
     >
       <List>
         {Object.entries({
+          '': <MenuIcon />,
           'Add': <AddCircleOutlineIcon />,
           'Upload': <UploadFile />
         }).map(([text, icon], _) => (
@@ -126,6 +127,7 @@ function App() {
                       setOpenUploadDialog(true);
                       break;
                     default:
+                      setIsDrawerOpen(false);
                       break;
                   }
               }}
