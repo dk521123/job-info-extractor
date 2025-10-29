@@ -30,5 +30,11 @@
   "saveFailed": "Failed to save job information.",
   "requiredField": "This field is required.",
   "systemInfo": "System Information",
-  "totalCount": "Total count"
+  "totalCount": "Total count",
+  "menuOnSidebar": "",
+  "addOnSidebar": "Add",
+  "uploadOnSidebar": "Upload",
+  "settingsOnSidebar": "Settings",
+  "settings": "Settings",
+  "rowLimit": "Row limit"
 }

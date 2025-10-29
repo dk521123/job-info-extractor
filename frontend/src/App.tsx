@@ -19,13 +19,18 @@ import {
   Snackbar,
   Alert,
 } from '@mui/material';
+
 import MenuIcon from '@mui/icons-material/Menu';
 import LanguageIcon from '@mui/icons-material/Language';
-import UploadFile from '@mui/icons-material/UploadFile';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import UploadFile from '@mui/icons-material/UploadFile';
+import SettingsApplicationsOutlined from '@mui/icons-material/SettingsApplicationsOutlined';
+
 import UploadDialog from './components/UploadDialog';
 import ItemDialog from './components/ItemDialog';
+import SettingsDialog from './components/SettingsDialog';
 import ItemList from './components/ItemList';
+
 import { useTranslation } from 'react-i18next';
 import type { UpdatedJobInfo } from './types/JobInfo';
 
@@ -43,6 +48,8 @@ function App() {
 
   const [openUploadDialog, setOpenUploadDialog] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+
+  const [openSettingsDialog, setOpenSettingsDialog] = useState(false);
 
   const [snackbar, setSnackbar] = useState<{
     open: boolean;
@@ -107,25 +114,29 @@ function App() {
     >
       <List>
         {Object.entries({
-          '': <MenuIcon />,
-          'Add': <AddCircleOutlineIcon />,
-          'Upload': <UploadFile />
-        }).map(([text, icon], _) => (
-
-          <ListItem key={text} disablePadding>
+          'menu': [<MenuIcon />, t('menuOnSidebar')],
+          'add': [<AddCircleOutlineIcon />, t('addOnSidebar')],
+          'upload': [<UploadFile />, t('uploadOnSidebar')],
+          'settings': [<SettingsApplicationsOutlined />, t('settingsOnSidebar')]
+        }).map(([menuKey, [icon, text]], _) => (
+          <ListItem key={menuKey} disablePadding>
             <ListItemButton
-              selected={selectedMenu === text}
+              selected={selectedMenu === menuKey}
               onClick={(e) => {
                   // Stop event propagation to prevent drawer from closing
                   e.stopPropagation();
-                  setSelectedMenu(text);
-                  switch (text) {
-                    case 'Add':
+                  setSelectedMenu(menuKey);
+                  switch (menuKey) {
+                    case 'add':
                       setOpenDialog(true);
                       break;
-                    case 'Upload':
+                    case 'upload':
                       setOpenUploadDialog(true);
                       break;
+                    case 'settings':
+                      setOpenSettingsDialog(true);
+                      break;
+                    case 'menu':
                     default:
                       setIsDrawerOpen(false);
                       break;
@@ -211,13 +222,20 @@ function App() {
           onClose={() => setOpenUploadDialog(false)}
           onUploadComplete={handleUploadSuccess}
         />
-        {/* "Add new" */}
+
+        {/* "Add" */}
         <ItemDialog
           isForNew={true}
           openDialog={openDialog}
           onClose={() => setOpenDialog(false)}
           targetJobInfo={undefined}
           onSave={handleAdd}
+        />
+
+        {/* "Settings" */}
+        <SettingsDialog
+          openSettingsDialog={openSettingsDialog}
+          onCloseSettingDialog={() => setOpenSettingsDialog(false)}
         />
 
         {/* Snackbar */}
@@ -235,6 +253,7 @@ function App() {
             {snackbar.message}
           </Alert>
         </Snackbar>
+
         {/* ===== Footer ===== */}
         <Box
           component="footer"
