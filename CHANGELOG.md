@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.6.0](https://github.com/dk521123/job-info-extractor/compare/v0.5.0...v0.6.0) (2025-10-29)
+
+
+### Features
+
+* To add UI for settings ([6f134bf](https://github.com/dk521123/job-info-extractor/commit/6f134bf6af7eb8433aa0ece289b860f711316df9))
+
+
+### Bug Fixes
+
+* Add menuicon on sidebar ([45fc935](https://github.com/dk521123/job-info-extractor/commit/45fc935e2642297d7f1f1c047e7b6452ed0e25bc))
+* Add total count and close upload dialog and reload after uploading ([1a220fa](https://github.com/dk521123/job-info-extractor/commit/1a220fa92607fd4b10d86cd9f72ece3ec387fd03))
+* To close all dialogs after closing settings dialogs ([aff75ed](https://github.com/dk521123/job-info-extractor/commit/aff75edf1959f5228dd4b016637a712e18784f6f))
+* To get row limit from settings ([987c393](https://github.com/dk521123/job-info-extractor/commit/987c393400cbc13e8d450531dc2f7eb1e1d3350b))
+* To modify to manage next button for itemlist ([c558abf](https://github.com/dk521123/job-info-extractor/commit/c558abf000a59672411be566fffc8de7ce9d8703))
+* To prevent closing the dialog if dirty. ([f100736](https://github.com/dk521123/job-info-extractor/commit/f1007361912fd80298443454fe2f6e09fab1beb9))
+* To remove a snackbar onUploadComplete ([34418d6](https://github.com/dk521123/job-info-extractor/commit/34418d67047042614146829900673f3f315eb8e9))
+* To save lang for web storage ([b95c9eb](https://github.com/dk521123/job-info-extractor/commit/b95c9eb381810a1bd081f18a7d1f689a8ed80ef9))
+* To update UI after adding ([f062b8b](https://github.com/dk521123/job-info-extractor/commit/f062b8bc6b8e85974070e6a84980039c0c7ab164))
+
 ## [0.5.0](https://github.com/dk521123/job-info-extractor/compare/v0.4.0...v0.5.0) (2025-10-28)
 
 
