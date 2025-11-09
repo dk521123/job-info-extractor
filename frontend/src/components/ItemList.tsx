@@ -114,11 +114,11 @@ export const ItemList: React.FC<Props> = ({ reloadTrigger, onUploadComplete }) =
       }} />
       
       {loading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
           <CircularProgress />
         </Box>
       ) : (
-        <Paper elevation={3}>
+        <Paper elevation={3} sx={{ mt: 2 }}>
           <List>
             {jobs.map((job, index) => (
               <React.Fragment key={job.id}>
