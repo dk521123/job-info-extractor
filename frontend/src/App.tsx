@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
+  ThemeProvider,
+  createTheme,
   CssBaseline,
   AppBar,
   Toolbar,
@@ -36,12 +38,17 @@ import type { UpdatedJobInfo } from './types/JobInfo';
 import { SettingsManager } from './utils/SettingsManager';
 import type { AppLanguage } from './utils/SettingsManager';
 
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import type { ThemeMode } from './utils/SettingsManager';
+
 // Width of the drawer in sidebar
-const drawerWidth = 240;
+const DRAWER_WIDTH = 240;
 
 function App() {
   const { t, i18n } = useTranslation();
   const [reloadTrigger, setReloadTrigger] = useState(0);
+  const [themeMode, setThemeMode] = useState<ThemeMode>(SettingsManager.getThemeMode());
   const [lang, setLang] = useState<AppLanguage>(SettingsManager.getLang());
   
   // For sidebar drawer state
@@ -63,6 +70,8 @@ function App() {
     // Initialize for lang
     const lang = SettingsManager.getLang();
     i18n.changeLanguage(lang);
+  
+    setThemeMode(SettingsManager.getThemeMode());
   }, []);
 
   const handleSnackbarClose = () => {
@@ -121,7 +130,7 @@ function App() {
   // Function to render the sidebar
   const drawerContent = (
     <Box
-      sx={{ width: drawerWidth }}
+      sx={{ width: DRAWER_WIDTH }}
       role="presentation"
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
@@ -168,8 +177,18 @@ function App() {
     </Box>
   );
 
+  const handleThemeModeChange = (newMode: ThemeMode) => {
+    setThemeMode(newMode);
+    SettingsManager.setThemeMode(newMode);
+  };
+  const theme = React.useMemo(() => createTheme({
+    palette: {
+      mode: themeMode,
+    },
+  }), [themeMode]);
+
   return (
-    <React.Fragment>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
 
       {/* ===== Header ===== */}
@@ -250,6 +269,8 @@ function App() {
         <SettingsDialog
           openSettingsDialog={openSettingsDialog}
           onCloseSettingDialog={() => handleCloseSettingsDialog() }
+          currentThemeMode={themeMode}
+          onThemeModeChange={handleThemeModeChange}
         />
 
         {/* Snackbar */}
@@ -283,7 +304,7 @@ function App() {
           © {new Date().getFullYear()} Job Info Extractor
         </Box>
       </Box>
-    </React.Fragment>
+    </ThemeProvider>
   );
 }
 

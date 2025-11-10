@@ -9,10 +9,15 @@ import {
   Radio,
   FormControlLabel,
   IconButton,
+  ToggleButtonGroup,
+  ToggleButton,
 } from '@mui/material';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
 import { SettingsManager } from '../../utils/SettingsManager';
+import type { ThemeMode } from '../../utils/SettingsManager';
 
 const style = {
   position: 'relative',
@@ -29,11 +34,16 @@ const style = {
 type SettingsDialogProps = {
   openSettingsDialog: boolean;
   onCloseSettingDialog: () => void;
+  // For theme mode
+  currentThemeMode: ThemeMode;
+  onThemeModeChange: (newMode: ThemeMode) => void;
 }
 
 export const SettingsDialog: React.FC<SettingsDialogProps> = ({
   openSettingsDialog,
   onCloseSettingDialog,
+  currentThemeMode,
+  onThemeModeChange,
 }) => {
   const { t } = useTranslation();
 
@@ -48,6 +58,15 @@ export const SettingsDialog: React.FC<SettingsDialogProps> = ({
       setRowLimit(SettingsManager.getRowLimit().toString());
     }
   }, [openSettingsDialog]);
+
+  const handleModeChange = (
+    _: React.MouseEvent<HTMLElement>,
+    newMode: ThemeMode | null,
+  ) => {
+    if (newMode !== null) {
+      onThemeModeChange(newMode);
+    }
+  };
 
   // To save settings after user actions
   const handleRowLimitChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,9 +96,36 @@ export const SettingsDialog: React.FC<SettingsDialogProps> = ({
           >
             <CloseIcon />
           </IconButton>
+
           <Typography id="modal-modal-title" variant="h6" component="h2">
             {t('settings')}
           </Typography>
+
+          {/* --- For theme mode --- */}
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            <FormControl>
+              <FormLabel id="theme-mode-label">{t('themeMode')}</FormLabel> 
+              <ToggleButtonGroup
+                value={currentThemeMode}
+                exclusive
+                onChange={handleModeChange}
+                aria-label="theme mode toggle"
+                size="small"
+                sx={{ mt: 1 }}
+              >
+                <ToggleButton value="light" aria-label="light mode">
+                  <Brightness7Icon sx={{ mr: 1 }} />
+                  {t('light')}
+                </ToggleButton>
+                <ToggleButton value="dark" aria-label="dark mode">
+                  <Brightness4Icon sx={{ mr: 1 }} />
+                  {t('dark')}
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </FormControl>
+          </Typography>
+
+          {/* --- For Row limit --- */}
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             <FormControl>
               <FormLabel id="search-row-limit-label">{t('rowLimit')}</FormLabel>
