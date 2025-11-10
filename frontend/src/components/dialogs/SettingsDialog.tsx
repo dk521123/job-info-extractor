@@ -8,12 +8,14 @@ import {
   RadioGroup,
   Radio,
   FormControlLabel,
+  IconButton,
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
 import { SettingsManager } from '../../utils/SettingsManager';
 
 const style = {
-  position: 'absolute',
+  position: 'relative',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
@@ -63,6 +65,18 @@ export const SettingsDialog: React.FC<SettingsDialogProps> = ({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <IconButton
+            aria-label="close"
+            onClick={onCloseSettingDialog}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             {t('settings')}
           </Typography>
