@@ -12,7 +12,9 @@ import {
   Divider,
   Typography,
   Snackbar,
+  IconButton,
 } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -241,6 +243,18 @@ export const ItemDialog: React.FC<Props> = ({
             </Alert>
           )}
           <div style={{ padding: 10 }}>
+            <IconButton
+              aria-label="close"
+              onClick={onClose}
+              sx={{
+                position: 'absolute',
+                right: 8,
+                top: 8,
+                color: (theme) => theme.palette.grey[500],
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
             <Grid container spacing={2}>
               {[
                 { label: t("companyName"), name: "company_name" },
