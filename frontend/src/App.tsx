@@ -31,10 +31,6 @@ import LanguageIcon from "@mui/icons-material/Language";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import UploadFile from "@mui/icons-material/UploadFile";
 import SettingsApplicationsOutlined from "@mui/icons-material/SettingsApplicationsOutlined";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 import UploadDialog from "./components/dialogs/UploadDialog";
 import ItemDialog from "./components/dialogs/ItemDialog";
@@ -234,14 +230,6 @@ function App() {
           px: 1,
         }}
       >
-        {expanded ? (
-          <Typography variant="h6" sx={{ pl: 1, fontWeight: 600 }}>
-            {t("mainTitle")}
-          </Typography>
-        ) : (
-          <Box />
-        )}
-
         <Box sx={{ display: "flex", alignItems: "center" }}>
           {/* Pin / unpin */}
           <Tooltip title={expanded ? t("collapseSidebar") || "Collapse" : t("expandSidebar") || "Expand"}>
@@ -253,7 +241,7 @@ function App() {
               }}
               aria-label="pin"
             >
-              {expanded ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+              <MenuIcon />
             </IconButton>
           </Tooltip>
         </Box>
@@ -315,19 +303,6 @@ function App() {
           }}
         >
           <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleAppBarMenu}
-              edge="start"
-              sx={{
-                mr: 2,
-                position: "relative",
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-
             <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 600 }}>
               {t("mainTitle")}
             </Typography>
