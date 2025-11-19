@@ -331,6 +331,11 @@ function App() {
             width: { md: sidebarPinned ? FULL_WIDTH : MINI_WIDTH },
             flexShrink: { md: 0 },
             transition: `width ${TRANSITION_MS}ms`,
+            borderRight: "1px solid",
+            borderColor: "divider",
+            height: "100vh",
+            position: "relative",
+            zIndex: 1200, // AppBar zIndex > drawer
           }}
           aria-label="mailbox folders"
         >
