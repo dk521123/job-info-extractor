@@ -58,3 +58,17 @@ PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED="False"
 WAIT_RETRIES=60
 WAIT_SLEEP=1
 ```
+
+# Appendix-A: Tech stack
+
+1. backend
+ 1. Python
+ 2. Fast API
+ 3. SQLAlchemy
+2. frontend
+ 1. Type script
+ 2. React
+ 3. MUI (Material UI)
+3. Others
+ 1. Docker
+ 2. Release Please (release-please)

@@ -10,9 +10,13 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  IconButton,
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import CancelIcon from "@mui/icons-material/Cancel";
+import UploadFile from '@mui/icons-material/UploadFile';
 import { useTranslation } from 'react-i18next';
-import type { RegisterResponse } from '../types/RegisterResponse';
+import type { RegisterResponse } from '../../types/RegisterResponse';
 
 type UploadProps = {
   openDialog: boolean;
@@ -92,14 +96,31 @@ export const UploadDialog: React.FC<UploadProps> = ({ openDialog, onClose, onUpl
         <DialogContent sx={{ mt: 1 }}></DialogContent>
         <DialogActions sx={{ flexDirection: 'column', alignItems: 'stretch', gap: 2, mb: 2 }}>
           <Input type="file" inputRef={fileInputRef} sx={{ mb: 2 }} />
-          <Box>
+          <IconButton
+            aria-label="close"
+            onClick={onClose}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
             <Button
               variant="contained"
               color="primary"
               onClick={uploadFile}
               disabled={loading}
+              startIcon={<UploadFile />}
+              sx={{ mr: 1 }}
             >
               {loading ? <CircularProgress size={24} color="inherit" /> : t('upload')}
+            </Button>
+            <Button onClick={onClose} startIcon={<CancelIcon />}>
+              {t("cancel")}
             </Button>
           </Box>
 

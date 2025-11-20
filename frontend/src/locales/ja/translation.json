@@ -31,10 +31,15 @@
   "requiredField": "このフィールドは必須です。",
   "systemInfo": "システム情報",
   "totalCount": "総件数",
-  "menuOnSidebar": "",
+  "switchingLanguage": "言語切替",
+  "openingSidebar": "サイドバーを開く",
+  "closingSidebar": "サイドバーを閉じる",
   "addOnSidebar": "追加",
   "uploadOnSidebar": "アップロード",
   "settingsOnSidebar": "設定",
   "settings": "設定",
-  "rowLimit": "検索行数"
+  "rowLimit": "検索行数",
+  "themeMode": "テーマ",
+  "light": "ライトモード",
+  "dark": "ダークモード"
 }

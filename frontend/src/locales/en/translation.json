@@ -31,10 +31,15 @@
   "requiredField": "This field is required.",
   "systemInfo": "System Information",
   "totalCount": "Total count",
-  "menuOnSidebar": "",
+  "switchingLanguage": "Switching language",
+  "openingSidebar": "Open sidebar",
+  "closingSidebar": "Close sidebar",
   "addOnSidebar": "Add",
   "uploadOnSidebar": "Upload",
   "settingsOnSidebar": "Settings",
   "settings": "Settings",
-  "rowLimit": "Row limit"
+  "rowLimit": "Row limit",
+  "themeMode": "Theme mode",
+  "light": "Light",
+  "dark": "Dark"
 }
