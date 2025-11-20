@@ -191,16 +191,6 @@ function App() {
     }
   };
 
-  // For AppBar's menu button (on mobile opens temporary)
-  const handleAppBarMenu = () => {
-    if (isMobile) {
-      setMobileOpen(true);
-    } else {
-      // on desktop, toggle pinned state (convenience)
-      setSidebarPinned((s) => !s);
-    }
-  };
-
   const handleThemeModeChange = (newMode: ThemeMode) => {
     setThemeMode(newMode);
     SettingsManager.setThemeMode(newMode);
@@ -310,7 +300,9 @@ function App() {
             </Typography>
 
             <Stack direction="row" spacing={1} alignItems="center">
-              <LanguageIcon color="action" />
+              <Tooltip title={t("switchingLanguage")}>
+                <LanguageIcon color="action" />
+              </Tooltip>
               <ToggleButtonGroup
                 value={lang}
                 exclusive

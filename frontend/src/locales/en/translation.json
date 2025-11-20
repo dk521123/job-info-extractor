@@ -31,6 +31,7 @@
   "requiredField": "This field is required.",
   "systemInfo": "System Information",
   "totalCount": "Total count",
+  "switchingLanguage": "Switching language",
   "menuOnSidebar": "Menu",
   "addOnSidebar": "Add",
   "uploadOnSidebar": "Upload",
