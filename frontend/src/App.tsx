@@ -232,7 +232,7 @@ function App() {
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
           {/* Pin / unpin */}
-          <Tooltip title={expanded ? t("collapseSidebar") || "Collapse" : t("expandSidebar") || "Expand"}>
+          <Tooltip title={t("menuOnSidebar")}>
             <IconButton
               size="small"
               onClick={(e) => {
@@ -254,28 +254,30 @@ function App() {
         <List>
           {menuItems.map((item) => (
             <ListItem key={item.key} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                selected={selectedMenu === item.key}
-                onClick={() => handleMenuClick(item.key)}
-                sx={{
-                  minHeight: 48,
-                  justifyContent: expanded ? "initial" : "center",
-                  px: 2.5,
-                  transition: `all ${TRANSITION_MS}ms`,
-                }}
-              >
-                <ListItemIcon
+              <Tooltip title={item.label}>
+                <ListItemButton
+                  selected={selectedMenu === item.key}
+                  onClick={() => handleMenuClick(item.key)}
                   sx={{
-                    minWidth: 0,
-                    mr: expanded ? 3 : "auto",
-                    justifyContent: "center",
+                    minHeight: 48,
+                    justifyContent: expanded ? "initial" : "center",
+                    px: 2.5,
+                    transition: `all ${TRANSITION_MS}ms`,
                   }}
                 >
-                  {item.icon}
-                </ListItemIcon>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: expanded ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {item.icon}
+                  </ListItemIcon>
 
-                {expanded && <ListItemText primary={item.label} />}
-              </ListItemButton>
+                  {expanded && <ListItemText primary={item.label} />}
+                </ListItemButton>
+              </Tooltip>
             </ListItem>
           ))}
         </List>
