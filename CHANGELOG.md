@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/dk521123/job-info-extractor/compare/v0.6.0...v0.7.0) (2025-11-20)
+
+
+### Features
+
+* implement to switch dark mode/light mode ([ebe21f9](https://github.com/dk521123/job-info-extractor/commit/ebe21f999c43abcda90e2bbea9569e3b76d58e67))
+
 ## [0.6.0](https://github.com/dk521123/job-info-extractor/compare/v0.5.0...v0.6.0) (2025-10-29)
 
 
