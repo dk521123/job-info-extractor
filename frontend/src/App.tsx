@@ -27,6 +27,7 @@ import {
 } from "@mui/material";
 
 import MenuIcon from "@mui/icons-material/Menu";
+import MenuOpenIcon from '@mui/icons-material/MenuOpen'
 import LanguageIcon from "@mui/icons-material/Language";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import UploadFile from "@mui/icons-material/UploadFile";
@@ -222,7 +223,7 @@ function App() {
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
           {/* Pin / unpin */}
-          <Tooltip title={t("menuOnSidebar")}>
+          <Tooltip title={expanded ? t("closingSidebar") : t("openingSidebar")}>
             <IconButton
               size="small"
               onClick={(e) => {
@@ -231,7 +232,7 @@ function App() {
               }}
               aria-label="pin"
             >
-              <MenuIcon />
+              { expanded ? <MenuIcon /> : <MenuOpenIcon /> }
             </IconButton>
           </Tooltip>
         </Box>
