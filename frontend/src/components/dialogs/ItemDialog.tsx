@@ -262,7 +262,7 @@ export const ItemDialog: React.FC<Props> = ({
                 { label: t("location"), name: "location" },
                 { label: t("salary"), name: "salary" },
               ].map((field) => (
-                <Grid item xs={12} sm={6} key={field.name}>
+                <Grid size={{ xs: 12, sm: 6 }} key={field.name}>
                   <TextField
                     sx={{ minWidth: 250 }}
                     label={field.label}
@@ -286,7 +286,7 @@ export const ItemDialog: React.FC<Props> = ({
 
                 <Grid container spacing={2}>
                   {systemFields.map((field) => (
-                    <Grid item xs={12} sm={6} key={field.name}>
+                    <Grid size={{ xs: 12, sm: 6 }} key={field.name}>
                       <TextField
                         sx={{ minWidth: 250 }}
                         label={field.label}
