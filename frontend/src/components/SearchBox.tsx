@@ -1,9 +1,16 @@
 import React, { useState, useRef } from 'react';
-import { Box, Chip, TextField, MenuItem, Paper, ListItemText, IconButton } from '@mui/material';
-import InputBase from '@mui/material/InputBase';
+import {
+  Box,
+  Chip,
+  Divider,
+  InputBase,
+  MenuItem,
+  Paper,
+  ListItemText,
+  IconButton
+} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useTranslation } from 'react-i18next';
-
 type Filter = { key: string; value: string };
 
 const KEY_SUGGESTIONS = [
@@ -118,6 +125,10 @@ export const SearchBox: React.FC<{
         component="form"
         sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 1000 }}
       >
+        <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+          <SearchIcon onClick={handleSearch} />
+        </IconButton>
+        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
         <InputBase
           sx={{
             flex: 1,
@@ -131,10 +142,6 @@ export const SearchBox: React.FC<{
           onKeyDown={handleKeyDown}
           placeholder={t('searchPlaceholder')}
         />
- 
-        <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
-          <SearchIcon onClick={handleSearch} />
-        </IconButton>
       </Paper>
 
       {/* Show key suggestions */}
