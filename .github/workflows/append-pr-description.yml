@@ -27,6 +27,7 @@ jobs:
           github_action_config.enable_output: "true"
           pr_description.publish_description_as_comment: "false"
           pr_description.add_original_user_description: "false"
+          pr_description.use_description_markers: "true"
           pr_description.enable_pr_type: "false"
           pr_description.enable_pr_diagram: "false"
           pr_description.enable_semantic_files_types: "false"
@@ -35,4 +36,3 @@ jobs:
           pr_description.extra_instructions: > 
             PRの変更内容を解析し、概要と主な変更点を日本語で3〜5個の箇条書きにしてください。
             影響範囲や注意点がある場合のみ、最後に短く追記してください。
-            元のPR Description本文は保持し、その後ろに生成した概要を追記してください。
