@@ -27,11 +27,12 @@ jobs:
           github_action_config.enable_output: "true"
           pr_description.publish_description_as_comment: "false"
           pr_description.add_original_user_description: "true"
-          # 英語で、PRの概要、主な変更点、影響範囲、注意点を簡潔に記述してください。
-          # その後、水平線と和訳も追加して下さい。生成した内容はPRのDescription本文に反映してください。
-          # なお、元あるPRのDescription本文は、そのままで、生成した内容を追記する形で反映してください。
+          pr_description.enable_pr_type: "false"
+          pr_description.enable_pr_diagram: "false"
+          pr_description.enable_semantic_files_types: "false"
+          pr_description.include_generated_by_header: "false"
+          config.response_language: "ja-JP"
           pr_description.extra_instructions: > 
-            Please describe the PR briefly, including the main changes, affected areas, and any important notes.
-            After that, please add a horizontal line and the Japanese translation.
-            The generated content should be reflected in the PR's Description body.
-            Please keep the original PR description text as is and append the generated content to it.
+            PRの変更内容を解析し、概要と主な変更点を日本語で3〜5個の箇条書きにしてください。
+            影響範囲や注意点がある場合のみ、最後に短く追記してください。
+            元のPR Description本文は保持し、その後ろに生成した概要を追記してください。
