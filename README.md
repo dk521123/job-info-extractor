@@ -1,11 +1,5 @@
 # job-info-extractor
 
-## AI PR analysis
-
-The `Analyze Pull Request` workflow analyzes pull request changes and updates the
-pull request description using Gemini's free API tier. Add a `GEMINI_API_KEY`
-repository secret in GitHub repository settings before enabling this workflow.
-
 ## Directory structure 
 ```
 job-info-extractor/
@@ -78,3 +72,9 @@ WAIT_SLEEP=1
 3. Others
  1. Docker
  2. Release Please (release-please)
+
+## AI PR analysis
+
+The `Analyze Pull Request` workflow analyzes pull request changes and updates the
+pull request description using Gemini's free API tier. Add a `GEMINI_API_KEY`
+repository secret in GitHub repository settings before enabling this workflow.
