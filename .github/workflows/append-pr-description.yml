@@ -9,86 +9,19 @@ permissions:
   contents: read
 
 jobs:
-  analyze_pr:
+  pr_agent:
     runs-on: ubuntu-latest
     steps:
-      - name: Analyze changes and update description
-        uses: actions/github-script@v8
+      - name: Analyze pull request
+        uses: the-pr-agent/pr-agent@v0.44.0
         env:
-          AI_MODEL: gpt-4o-mini
-          OPENAI_BASE_URL: https://api.openai.com/v1
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const pr = await github.rest.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number
-            });
-
-            const files = await github.paginate(github.rest.pulls.listFiles, {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number,
-              per_page: 100
-            });
-
-            const diff = files.map((file) => {
-              const patch = file.patch || '[binary or generated file: patch unavailable]';
-              return `### ${file.filename} (${file.status})\n${patch}`;
-            }).join('\n\n').slice(0, 60000);
-
-            if (!process.env.OPENAI_API_KEY) {
-              throw new Error('The OPENAI_API_KEY repository secret is not configured');
-            }
-
-            const response = await fetch(`${process.env.OPENAI_BASE_URL}/chat/completions`, {
-              method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                model: process.env.AI_MODEL,
-                messages: [
-                  {
-                    role: 'system',
-                    content: 'You review software pull requests. Return concise Markdown in Japanese with exactly these headings: ## Summary, ## Changes, ## Review Notes. Mention risks or missing tests when applicable. Do not use a top-level heading.'
-                  },
-                  {
-                    role: 'user',
-                    content: `Review this pull request.\nTitle: ${pr.data.title}\n\nDiff:\n${diff}`
-                  }
-                ],
-                temperature: 0.2,
-                max_tokens: 1200
-              })
-            });
-
-            if (!response.ok) {
-              throw new Error(`AI provider request failed: ${response.status} ${await response.text()}`);
-            }
-
-            const result = await response.json();
-            const analysis = result.choices?.[0]?.message?.content?.trim();
-            if (!analysis) {
-              throw new Error('GitHub Models returned an empty analysis');
-            }
-
-            const markerStart = '<!-- ai-pr-analysis -->';
-            const markerEnd = '<!-- end-ai-pr-analysis -->';
-            const section = `${markerStart}\n## AI Analysis\n\n${analysis}\n${markerEnd}`;
-            const currentBody = pr.data.body || '';
-            const markerPattern = new RegExp(`${markerStart}[\\s\\S]*?${markerEnd}`);
-            const newBody = markerPattern.test(currentBody)
-              ? currentBody.replace(markerPattern, section)
-              : `${currentBody.trim()}\n\n${section}`.trim();
-
-            await github.rest.pulls.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number,
-              body: newBody
-            });
+          config.model: "gemini/gemini-2.5-flash"
+          config.fallback_models: '["gemini/gemini-2.5-flash"]'
+          GOOGLE_AI_STUDIO.GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          github_action_config.auto_describe: "true"
+          github_action_config.auto_review: "false"
+          github_action_config.auto_improve: "false"
+          github_action_config.pr_actions: '["opened", "reopened", "synchronize"]'
+          pr_description.publish_description_as_comment: "false"
+          pr_description.add_original_user_description: "true"
