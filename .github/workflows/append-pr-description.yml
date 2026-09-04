@@ -1,0 +1,38 @@
+name: Analyze Pull Request
+
+on:
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  issues: write
+  pull-requests: write
+  contents: write
+
+jobs:
+  pr_agent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Analyze pull request
+        uses: the-pr-agent/pr-agent@v0.44.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          config.model: "gemini/gemini-3.6-flash"
+          config.fallback_models: '["gemini/gemini-3.6-flash"]'
+          GOOGLE_AI_STUDIO.GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          github_action_config.auto_describe: "true"
+          github_action_config.auto_review: "false"
+          github_action_config.auto_improve: "false"
+          github_action_config.pr_actions: '["opened", "reopened", "synchronize"]'
+          github_action_config.enable_output: "true"
+          pr_description.publish_description_as_comment: "false"
+          pr_description.add_original_user_description: "false"
+          pr_description.enable_pr_type: "false"
+          pr_description.enable_pr_diagram: "false"
+          pr_description.enable_semantic_files_types: "false"
+          pr_description.include_generated_by_header: "false"
+          config.response_language: "ja-JP"
+          pr_description.extra_instructions: > 
+            PRの変更内容を解析し、概要と主な変更点を日本語で3〜5個の箇条書きにしてください。
+            影響範囲や注意点がある場合のみ、最後に短く追記してください。
+            元のPR Description本文は保持し、その後ろに生成した概要を追記してください。

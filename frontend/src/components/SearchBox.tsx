@@ -1,7 +1,16 @@
 import React, { useState, useRef } from 'react';
-import { Box, Chip, TextField, Button, MenuItem, Paper, ListItemText } from '@mui/material';
+import {
+  Box,
+  Chip,
+  Divider,
+  InputBase,
+  MenuItem,
+  Paper,
+  ListItemText,
+  IconButton
+} from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import { useTranslation } from 'react-i18next';
-
 type Filter = { key: string; value: string };
 
 const KEY_SUGGESTIONS = [
@@ -112,24 +121,28 @@ export const SearchBox: React.FC<{
         />
       ))}
 
-      <TextField
-        inputRef={inputRef}
-        variant="standard"
-        value={`${keyInput}${isEnteringValue ? ':' : ''}${valueInput}`}
-        onChange={handleChange}
-        onCompositionStart={() => setIsComposing(true)}
-        onCompositionEnd={() => setIsComposing(false)}
-        onKeyDown={handleKeyDown}
-        placeholder={t('searchPlaceholder')}
-        sx={{
-          flex: 1,
-          minWidth: 300,
-        }}
-      />
-
-      <Button variant="contained" onClick={handleSearch}>
-        {t('search')}
-      </Button>
+      <Paper
+        component="form"
+        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 1000 }}
+      >
+        <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+          <SearchIcon onClick={handleSearch} />
+        </IconButton>
+        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+        <InputBase
+          sx={{
+            flex: 1,
+            minWidth: 500,
+          }}
+          inputRef={inputRef}
+          value={`${keyInput}${isEnteringValue ? ':' : ''}${valueInput}`}
+          onChange={handleChange}
+          onCompositionStart={() => setIsComposing(true)}
+          onCompositionEnd={() => setIsComposing(false)}
+          onKeyDown={handleKeyDown}
+          placeholder={t('searchPlaceholder')}
+        />
+      </Paper>
 
       {/* Show key suggestions */}
       {!isEnteringValue && keyInput && (
