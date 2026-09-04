@@ -2,7 +2,7 @@ name: Analyze Pull Request
 
 on:
   pull_request_target:
-    types: [opened, synchronize, reopened]
+    types: [opened]
 
 permissions:
   issues: write
@@ -26,7 +26,7 @@ jobs:
           github_action_config.pr_actions: '["opened", "reopened", "synchronize"]'
           github_action_config.enable_output: "true"
           pr_description.publish_description_as_comment: "false"
-          pr_description.add_original_user_description: "true"
+          pr_description.add_original_user_description: "false"
           pr_description.enable_pr_type: "false"
           pr_description.enable_pr_diagram: "false"
           pr_description.enable_semantic_files_types: "false"
