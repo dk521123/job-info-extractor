@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.1](https://github.com/dk521123/job-info-extractor/compare/v0.7.0...v0.7.1) (2026-09-04)
+
+
+### Bug Fixes
+
+* Add CI/CD for appending PR description ([6bfd9b7](https://github.com/dk521123/job-info-extractor/commit/6bfd9b7462d1e99221ce12f8ea51c8b216462aa2))
+* Add CI/CD for appending PR description ([1be5ed1](https://github.com/dk521123/job-info-extractor/commit/1be5ed135759318713f455f70cd9e08677b1b01e))
+* Modify ([efabbd5](https://github.com/dk521123/job-info-extractor/commit/efabbd5b91c4f429e9400997a6e9a8cc902ad5b6))
+* PR ([cf5342b](https://github.com/dk521123/job-info-extractor/commit/cf5342b71f0775dc4b84fad7274f2c5bd18d09b3))
+* PR ([f220b5c](https://github.com/dk521123/job-info-extractor/commit/f220b5c7010160fad7d11935c555afcbc085d69e))
+* To modify warning for MUI. Refer to https://mui.com/material-ui/migration/upgrade-to-grid-v2/ ([83e56bf](https://github.com/dk521123/job-info-extractor/commit/83e56bf9b56632e1a600d946aa527976d6976b5d))
+
 ## [0.7.0](https://github.com/dk521123/job-info-extractor/compare/v0.6.0...v0.7.0) (2025-11-20)
 
 
