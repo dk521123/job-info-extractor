@@ -5,8 +5,9 @@ on:
     types: [opened, synchronize, reopened]
 
 permissions:
+  issues: write
   pull-requests: write
-  contents: read
+  contents: write
 
 jobs:
   pr_agent:
@@ -23,5 +24,14 @@ jobs:
           github_action_config.auto_review: "false"
           github_action_config.auto_improve: "false"
           github_action_config.pr_actions: '["opened", "reopened", "synchronize"]'
+          github_action_config.enable_output: "true"
           pr_description.publish_description_as_comment: "false"
           pr_description.add_original_user_description: "true"
+          # 英語で、PRの概要、主な変更点、影響範囲、注意点を簡潔に記述してください。
+          # その後、水平線と和訳も追加して下さい。生成した内容はPRのDescription本文に反映してください。
+          # なお、元あるPRのDescription本文は、そのままで、生成した内容を追記する形で反映してください。
+          pr_description.extra_instructions: > 
+            Please describe the PR briefly, including the main changes, affected areas, and any important notes.
+            After that, please add a horizontal line and the Japanese translation.
+            The generated content should be reflected in the PR's Description body.
+            Please keep the original PR description text as is and append the generated content to it.
